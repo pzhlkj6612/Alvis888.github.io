@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="茶壶盖">
 <meta property="og:description" content="&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;Transact-SQL中的存储过程，非常类似于编程语言中的方法，它可以重复调用。当存储过程执行一次后，可以将语句缓存中，这样下次执行的时候直接使用缓存中的语句。这样就可以提高存储过程的性能。 基本概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;存储过程是由SQL 语句和控制流程语句构成的语句块（语句集合）。他不仅可以输入参数，还可以输出参数。存">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-17T11:11:28.906Z">
+<meta property="og:updated_time" content="2017-08-17T14:10:00.693Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sql server 存储过程入门（一）以及C#简单调用">
 <meta name="twitter:description" content="&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;Transact-SQL中的存储过程，非常类似于编程语言中的方法，它可以重复调用。当存储过程执行一次后，可以将语句缓存中，这样下次执行的时候直接使用缓存中的语句。这样就可以提高存储过程的性能。 基本概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;存储过程是由SQL 语句和控制流程语句构成的语句块（语句集合）。他不仅可以输入参数，还可以输出参数。存">
@@ -376,7 +376,7 @@ where UserName = @username
 <li>若要运行该过程，请在对象资源管理器中右键单击存储过程名称 GetXHG，然后选择“执行存储过程”。</li>
 <li>在“执行过程”窗口中，输入 xiehongguang 作为参数 @UserName 的值。<br>&ensp;&ensp;&ensp;&ensp;</li>
 </ol>
-<h2 id="使用-Transact-SQL-在查询编辑器中创建过程"><a href="#使用-Transact-SQL-在查询编辑器中创建过程" class="headerlink" title="使用 Transact-SQL 在查询编辑器中创建过程"></a>使用 Transact-SQL 在查询编辑器中创建过程</h2><ol>
+<h3 id="使用-Transact-SQL-在查询编辑器中创建过程"><a href="#使用-Transact-SQL-在查询编辑器中创建过程" class="headerlink" title="使用 Transact-SQL 在查询编辑器中创建过程"></a>使用 Transact-SQL 在查询编辑器中创建过程</h3><ol>
 <li>在 “对象资源管理器”中，连接到 数据库引擎的实例。  </li>
 <li>从 “文件” 菜单中，单击 “新建查询”。</li>
 <li><p>将以下示例复制并粘贴到查询窗口中，然后单击 “执行”。 该示例将使用其他过程名称创建与上述相同的存储过程。</p>
@@ -450,7 +450,7 @@ GO
         <p><span>本文标题:</span><a href="/2016/10/17/sql-server-存储过程入门以及C-简单调用/">sql server 存储过程入门（一）以及C#简单调用</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">谢红光</a></p>
         <p><span>发布时间:</span>2016-10-17, 17:31:12</p>
-        <p><span>最后更新:</span>2017-08-17, 19:11:28</p>
+        <p><span>最后更新:</span>2017-08-17, 22:10:00</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2016/10/17/sql-server-存储过程入门以及C-简单调用/" title="sql server 存储过程入门（一）以及C#简单调用">http://yoursite.com/2016/10/17/sql-server-存储过程入门以及C-简单调用/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2016/10/17/sql-server-存储过程入门以及C-简单调用/　　作者: 谢红光" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -486,7 +486,7 @@ GO
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本概念"><span class="toc-number">1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建存储过程并SSMS中执行"><span class="toc-number">2.</span> <span class="toc-text">创建存储过程并SSMS中执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-SQL-Server-Management-Studio"><span class="toc-number">2.1.</span> <span class="toc-text">使用 SQL Server Management Studio</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-Transact-SQL-在查询编辑器中创建过程"><span class="toc-number">3.</span> <span class="toc-text">使用 Transact-SQL 在查询编辑器中创建过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-调用执行"><span class="toc-number">4.</span> <span class="toc-text">C# 调用执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">4.1.</span> <span class="toc-text">参考</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本概念"><span class="toc-number">1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建存储过程并SSMS中执行"><span class="toc-number">2.</span> <span class="toc-text">创建存储过程并SSMS中执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-SQL-Server-Management-Studio"><span class="toc-number">2.1.</span> <span class="toc-text">使用 SQL Server Management Studio</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-Transact-SQL-在查询编辑器中创建过程"><span class="toc-number">2.2.</span> <span class="toc-text">使用 Transact-SQL 在查询编辑器中创建过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-调用执行"><span class="toc-number">3.</span> <span class="toc-text">C# 调用执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">3.1.</span> <span class="toc-text">参考</span></a></li></ol></li></ol>
         
     </div>
     <style>

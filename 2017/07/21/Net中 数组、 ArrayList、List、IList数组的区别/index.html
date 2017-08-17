@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="谢红光" />
+
+
+
+<meta name="description" content="在C#中数组，ArrayList，List都能够存储一组对象，之间必有区别 数组Array 类似于线性表，在内存中是连续存储的，便于存储、取值，但一般不做插入、删除操作。 存储相同类型元素的固定大小的顺序集合 使用用一组连续存储单元存放数组的数据元素，存在次序约定问题 大小固定 谨防数组越界 不建议使用数组 //System.Array            //1、数组[] 特定类型、固定长度">
+<meta name="keywords" content="C#,.NET">
+<meta property="og:type" content="article">
+<meta property="og:title" content=".Net中 数组、 ArrayList、List、IList数组的区别">
+<meta property="og:url" content="http://yoursite.com/2017/07/21/Net中 数组、 ArrayList、List、IList数组的区别/index.html">
+<meta property="og:site_name" content="茶壶盖">
+<meta property="og:description" content="在C#中数组，ArrayList，List都能够存储一组对象，之间必有区别 数组Array 类似于线性表，在内存中是连续存储的，便于存储、取值，但一般不做插入、删除操作。 存储相同类型元素的固定大小的顺序集合 使用用一组连续存储单元存放数组的数据元素，存在次序约定问题 大小固定 谨防数组越界 不建议使用数组 //System.Array            //1、数组[] 特定类型、固定长度">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-07-27T03:04:12.107Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content=".Net中 数组、 ArrayList、List、IList数组的区别">
+<meta name="twitter:description" content="在C#中数组，ArrayList，List都能够存储一组对象，之间必有区别 数组Array 类似于线性表，在内存中是连续存储的，便于存储、取值，但一般不做插入、删除操作。 存储相同类型元素的固定大小的顺序集合 使用用一组连续存储单元存放数组的数据元素，存在次序约定问题 大小固定 谨防数组越界 不建议使用数组 //System.Array            //1、数组[] 特定类型、固定长度">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="茶壶盖" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/dog.jpg">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>.Net中 数组、 ArrayList、List、IList数组的区别 | 茶壶盖</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/dog.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">谢红光</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="/xiehongguang0228@gmail.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/Alvis888" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa StackOverflow" href="https://stackoverflow.com/users/6244981/xiehongguang" title="StackOverflow"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET/">.NET</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/360云/">360云</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AZURE/">AZURE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Axis属性/">Axis属性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bt/">Bt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Build-Event/">Build Event</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-写入文件/">C#写入文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CURD/">CURD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ESLint/">ESLint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Email/">Email</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ExecuteNonQuery/">ExecuteNonQuery ()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Json/">Json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LUIS/">LUIS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-D3-Axis/">React-D3 Axis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-server/">SQL server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS/">VS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/">XML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bat/">bat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bot/">bot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bot-framework/">bot framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-c/">c/c++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/case语句/">case语句</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/date/">date()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dialog/">dialog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fetch/">fetch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fetch链接数据库/">fetch链接数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab/">gitlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hook/">hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/material-ui/">material ui</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microsoft-bot/">microsoft bot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/">node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/office/">office</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/qq/">qq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react-native/">react native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rn/">rn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sate/">sate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/select/">select</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server-2008/">server 2008</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service/">service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/slack/">slack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlserver/">sqlserver</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql日期加减/">sql日期加减</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql日期格式化/">sql日期格式化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/static/">static</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/string/">string</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thinkphp/">thinkphp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/time/">time()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-api/">web api</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webhook/">webhook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webhook，Gitlab/">webhook，Gitlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-service/">windows service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/word/">word</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wpf/">wpf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存管理/">内存管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/删除/">删除</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图片库/">图片库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串/">字符串</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/存储过程/">存储过程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/实体形式/">实体形式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/弹窗/">弹窗</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/截取/">截取</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/搭建/">搭建</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库，AZURE/">数据库，AZURE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/时间戳/">时间戳</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/电影/">电影</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/登陆页面/">登陆页面</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/种子/">种子</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/空白页/">空白页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网盘搜索/">网盘搜索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网站/">网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/美剧/">美剧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/选择框/">选择框</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/邮件/">邮件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/链接/">链接</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">谢红光</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/dog.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">谢红光</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="/xiehongguang0228@gmail.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/Alvis888" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa StackOverflow" target="_blank" href="https://stackoverflow.com/users/6244981/xiehongguang" title="StackOverflow"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-Net中 数组、 ArrayList、List、IList数组的区别" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/21/Net中 数组、 ArrayList、List、IList数组的区别/" class="article-date">
+      <time datetime="2017-07-21T01:05:22.000Z" itemprop="datePublished">2017-07-21</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      .Net中 数组、 ArrayList、List、IList数组的区别
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/C/">C#</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NET/">.NET</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C#</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>在C#中数组，ArrayList，List都能够存储一组对象，之间必有区别</p>
+<h2 id="数组Array"><a href="#数组Array" class="headerlink" title="数组Array"></a>数组Array</h2><ul>
+<li>类似于线性表，在内存中是连续存储的，便于存储、取值，但一般不做插入、删除操作。</li>
+<li>存储相同类型元素的固定大小的顺序集合</li>
+<li>使用用一组连续存储单元存放数组的数据元素，存在次序约定问题</li>
+<li>大小固定</li>
+<li>谨防数组越界</li>
+<li>不建议使用数组<br><div id="crayon-5970cac634b45906825588-9" class="crayon-line"><span class="crayon-h"> </span><span class="crayon-c">//System.Array</span></div><br><div id="crayon-5970cac634b45906825588-10" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-c">//1、数组[] 特定类型、固定长度</span></div><br><div id="crayon-5970cac634b45906825588-11" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-t">string</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span> <span class="crayon-v">str1</span> <span class="crayon-o">=</span> <span class="crayon-r">new</span> <span class="crayon-t">string</span><span class="crayon-sy">[</span><span class="crayon-cn">3</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-12" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-v">str1</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">]</span> <span class="crayon-o">=</span> <span class="crayon-s">“a”</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-13" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-v">str1</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">]</span> <span class="crayon-o">=</span> <span class="crayon-s">“b”</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-14" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-v">str1</span><span class="crayon-sy">[</span><span class="crayon-cn">2</span><span class="crayon-sy">]</span> <span class="crayon-o">=</span> <span class="crayon-s">“c”</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-15" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span><span class="crayon-v">str1</span><span class="crayon-sy">[</span><span class="crayon-cn">2</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-16" class="crayon-line crayon-striped-line"></div><br><div id="crayon-5970cac634b45906825588-17" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-t">string</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span> <span class="crayon-v">str2</span> <span class="crayon-o">=</span> <span class="crayon-r">new</span> <span class="crayon-t">string</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span> <span class="crayon-sy">{</span> <span class="crayon-s">“a”</span><span class="crayon-sy">,</span> <span class="crayon-s">“b”</span><span class="crayon-sy">,</span> <span class="crayon-s">“c”</span> <span class="crayon-sy">}</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-18" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span><span class="crayon-v">str2</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-19" class="crayon-line"></div><br><div id="crayon-5970cac634b45906825588-20" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-t">string</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span> <span class="crayon-v">str3</span> <span class="crayon-o">=</span> <span class="crayon-sy">{</span> <span class="crayon-s">“a”</span><span class="crayon-sy">,</span> <span class="crayon-s">“b”</span><span class="crayon-sy">,</span> <span class="crayon-s">“c”</span> <span class="crayon-sy">}</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-21" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span><span class="crayon-v">str3</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-22" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-c">//2、二维数组</span></div><br><div id="crayon-5970cac634b45906825588-23" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-c">//int[,] intArray=new int[2,3]{ {1,11,111},{2,22,222}};</span></div><br><div id="crayon-5970cac634b45906825588-24" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-t">int</span><span class="crayon-sy">[</span><span class="crayon-sy">,</span><span class="crayon-sy">]</span> <span class="crayon-v">intArray</span> <span class="crayon-o">=</span> <span class="crayon-r">new</span> <span class="crayon-t">int</span><span class="crayon-sy">[</span><span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">3</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-25" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span> <span class="crayon-o">=</span> <span class="crayon-cn">1</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-26" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span> <span class="crayon-o">=</span> <span class="crayon-cn">11</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-27" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">2</span><span class="crayon-sy">]</span> <span class="crayon-o">=</span> <span class="crayon-cn">111</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-28" class="crayon-line crayon-striped-line"></div><br><div id="crayon-5970cac634b45906825588-29" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span> <span class="crayon-o">=</span> <span class="crayon-cn">2</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-30" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span> <span class="crayon-o">=</span> <span class="crayon-cn">22</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-31" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">2</span><span class="crayon-sy">]</span> <span class="crayon-o">=</span> <span class="crayon-cn">222</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-32" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span><span class="crayon-s">“{0},{1},{2}”</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">2</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-33" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span><span class="crayon-s">“{0},{1},{2}”</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">2</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-34" class="crayon-line crayon-striped-line"></div><br><div id="crayon-5970cac634b45906825588-35" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-c">//3、多维数组</span></div><br><div id="crayon-5970cac634b45906825588-36" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-t">int</span><span class="crayon-sy">[</span><span class="crayon-sy">,</span> <span class="crayon-sy">,</span><span class="crayon-sy">]</span> <span class="crayon-v">intArray1</span> <span class="crayon-o">=</span> <span class="crayon-r">new</span> <span class="crayon-t">int</span><span class="crayon-sy">[</span><span class="crayon-sy">,</span><span class="crayon-sy">,</span><span class="crayon-sy">]</span></div><br><div id="crayon-5970cac634b45906825588-37" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-sy">{</span></div><br><div id="crayon-5970cac634b45906825588-38" class="crayon-line crayon-striped-line"><span class="crayon-h">                </span><span class="crayon-sy">{</span><span class="crayon-sy">{</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">}</span><span class="crayon-sy">,</span> <span class="crayon-sy">{</span><span class="crayon-cn">11</span><span class="crayon-sy">,</span> <span class="crayon-cn">11</span><span class="crayon-sy">}</span><span class="crayon-sy">,</span> <span class="crayon-sy">{</span><span class="crayon-cn">111</span><span class="crayon-sy">,</span> <span class="crayon-cn">111</span><span class="crayon-sy">}</span><span class="crayon-sy">}</span><span class="crayon-sy">,</span></div><br><div id="crayon-5970cac634b45906825588-39" class="crayon-line"><span class="crayon-h">                </span><span class="crayon-sy">{</span><span class="crayon-sy">{</span><span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">2</span><span class="crayon-sy">}</span><span class="crayon-sy">,</span> <span class="crayon-sy">{</span><span class="crayon-cn">22</span><span class="crayon-sy">,</span> <span class="crayon-cn">22</span><span class="crayon-sy">}</span><span class="crayon-sy">,</span> <span class="crayon-sy">{</span><span class="crayon-cn">222</span><span class="crayon-sy">,</span> <span class="crayon-cn">222</span><span class="crayon-sy">}</span><span class="crayon-sy">}</span><span class="crayon-sy">,</span></div><br><div id="crayon-5970cac634b45906825588-40" class="crayon-line crayon-striped-line"><span class="crayon-h">                </span><span class="crayon-sy">{</span><span class="crayon-sy">{</span><span class="crayon-cn">3</span><span class="crayon-sy">,</span> <span class="crayon-cn">3</span><span class="crayon-sy">}</span><span class="crayon-sy">,</span> <span class="crayon-sy">{</span><span class="crayon-cn">33</span><span class="crayon-sy">,</span> <span class="crayon-cn">33</span><span class="crayon-sy">}</span><span class="crayon-sy">,</span> <span class="crayon-sy">{</span><span class="crayon-cn">333</span><span class="crayon-sy">,</span> <span class="crayon-cn">333</span><span class="crayon-sy">}</span><span class="crayon-sy">}</span></div><br><div id="crayon-5970cac634b45906825588-41" class="crayon-line"><span class="crayon-h">            </span><span class="crayon-sy">}</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-42" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span><span class="crayon-s">“{0},{1},{2},{3},{4},{5}”</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span></div><br><div id="crayon-5970cac634b45906825588-43" class="crayon-line"><span class="crayon-h">               </span><span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-44" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span><span class="crayon-s">“{0},{1},{2},{3},{4},{5}”</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span></div><br><div id="crayon-5970cac634b45906825588-45" class="crayon-line"><span class="crayon-h">                </span><span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b45906825588-46" class="crayon-line crayon-striped-line"><span class="crayon-h">            </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span><span class="crayon-s">“{0},{1},{2},{3},{4},{5}”</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span></div><br><div id="crayon-5970cac634b45906825588-47" class="crayon-line"><span class="crayon-h">                </span><span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span> <span class="crayon-v">intArray1</span><span class="crayon-sy">[</span><span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">2</span><span class="crayon-sy">,</span> <span class="crayon-cn">1</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div></div><div>
+
+</div></li>
+</ul>
+<h3 id="Array-forEach-函数"><a href="#Array-forEach-函数" class="headerlink" title="Array.forEach 函数"></a>Array.forEach 函数</h3><div class="introduction"><br><br><em>   <span id="mt1" class="sentence" data-guid="cfce4b4dace31932f1868d883951272d" data-source="">对 <strong>Array</strong> 对象的每个元素调用指定函数。</span> <span id="mt2" class="sentence" data-guid="6df02432b13071156716c2ec5c127414" data-source="">此函数是静态的，可在不创建对象实例的情况下调用。</span>
+</em>   Firefox 除外）中，<strong>forEach</strong> 函数都忽略数组中值为 <span class="input">undefined</span> 的元素<br><div><br><br>    public static void ForEach&lt;T&gt;(<br>        T[] array,<br>        Action&lt;T&gt; action<br>    )<code>&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;syntaxSection&quot; class=&quot;section&quot;&gt;
+    &lt;div id=&quot;code-snippet-1&quot; class=&quot;codeSnippetContainer&quot;&gt;
+    &lt;div class=&quot;codeSnippetContainerCodeContainer&quot;&gt;
+    &lt;div id=&quot;CodeSnippetContainerCode_1aea524e-38fa-4371-bc09-a48f4c48b531&quot; class=&quot;codeSnippetContainerCode&quot; dir=&quot;ltr&quot;&gt;
+    &lt;table style=&quot;height: 198px;&quot; summary=&quot;table&quot; width=&quot;364&quot;&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+    &lt;th scope=&quot;col&quot;&gt;&lt;span id=&quot;mt3&quot; class=&quot;sentence&quot; data-guid=&quot;b4dad0fe5fbef2c0e24d9db1cc69e5a2&quot; data-source=&quot;&quot;&gt;术语&lt;/span&gt;&lt;/th&gt;
+    &lt;th scope=&quot;col&quot;&gt;&lt;span id=&quot;mt4&quot; class=&quot;sentence&quot; data-guid=&quot;30618b3b44fa316257d07e387759fae5&quot; data-source=&quot;&quot;&gt;定义&lt;/span&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+    &lt;td data-th=&quot;术语&quot;&gt;&lt;span class=&quot;parameter&quot;&gt;array&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-th=&quot;定义&quot;&gt;&lt;span id=&quot;mt5&quot; class=&quot;sentence&quot; data-guid=&quot;948352e0d370dd0991aa6f3d5f88330c&quot; data-source=&quot;&quot;&gt;要枚举的 **Array** 对象。&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+    &lt;td data-th=&quot;术语&quot;&gt;&lt;span class=&quot;parameter&quot;&gt;method&lt;/span&gt;&lt;/td&gt;
+    &lt;td data-th=&quot;定义&quot;&gt;&lt;span id=&quot;mt6&quot; class=&quot;sentence&quot; data-guid=&quot;fba19d57213fe41e88b2d51c372d753c&quot; data-source=&quot;&quot;&gt;要对数组中每个元素调用的函数。&lt;/span&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;div&gt;
+    &lt;pre&gt;</code>public class SamplesArray<br>    {<br>        public static void Main()<br>        {<br>            // create a three element array of integers<br>            int[] intArray = new int[] {2, 3, 4};<br><br>            // set a delegate for the ShowSquares method<br>            Action&lt;int&gt; action = new Action&lt;int&gt;(ShowSquares);<br><br>            Array.ForEach(intArray, action);<br>        }<br><br>        private static void ShowSquares(int val)<br>        {<br>            Console.WriteLine(“{0:d} squared = {1:d}”, val, val<em>val);<br>        }<br>    }<br><br>    /</em><br>    This code produces the following output:<br><br>    2 squared = 4<br>    3 squared = 9<br>    4 squared = 16<br>    */`<br>    </div><br>    </div><br>    <br>    <br>    <br>    
+
+<pre><code>## ArrayList
+</code></pre><ul>
+<li>在使用该类时必须进行引用（装箱、拆箱）</li>
+<li>ArrayList对象用来克服Array的缺点</li>
+<li>大小是按照其中存储的数据来<strong>动态</strong>扩充与收缩</li>
+<li>ArrayList会把所有插入其中的数据当作为object类型来处理</li>
+<li>一个对象可存储多种类型的数据</li>
+<li>可能会报类型不匹配的错误  不安全</li>
+<li>通过调用TrimToSize、设置Capacity属性减少容量</li>
+<li><p>可通过调用 TrimToSize 或通过显式设置 Capacity（容量） 属性减少容量。</p>
+<div></div><br><div id="crayon-5970cac634b58918629451-5" class="crayon-line"><span class="crayon-m">public</span> <span class="crayon-m">static</span> <span class="crayon-t">void</span> <span class="crayon-e">Main</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-h">  </span><span class="crayon-sy">{</span></div><br><div id="crayon-5970cac634b58918629451-6" class="crayon-line crayon-striped-line"></div><br><div id="crayon-5970cac634b58918629451-7" class="crayon-line"><span class="crayon-h">      </span><span class="crayon-e">ArrayList </span><span class="crayon-v">myAL</span> <span class="crayon-o">=</span> <span class="crayon-r">new</span> <span class="crayon-e">ArrayList</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-8" class="crayon-line crayon-striped-line"><span class="crayon-h">      </span><span class="crayon-v">myAL</span><span class="crayon-sy">.</span><span class="crayon-e">Add</span><span class="crayon-sy">(</span><span class="crayon-s">“Hello”</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-9" class="crayon-line"><span class="crayon-h">      </span><span class="crayon-v">myAL</span><span class="crayon-sy">.</span><span class="crayon-e">Add</span><span class="crayon-sy">(</span><span class="crayon-s">“World”</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-10" class="crayon-line crayon-striped-line"><span class="crayon-h">      </span><span class="crayon-v">myAL</span><span class="crayon-sy">.</span><span class="crayon-e">Add</span><span class="crayon-sy">(</span><span class="crayon-s">“!”</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-11" class="crayon-line"></div><br><div id="crayon-5970cac634b58918629451-12" class="crayon-line crayon-striped-line"><span class="crayon-h">      </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span> <span class="crayon-s">“myAL”</span> <span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-13" class="crayon-line"><span class="crayon-h">      </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span> <span class="crayon-s">“    Count:    {0}”</span><span class="crayon-sy">,</span> <span class="crayon-v">myAL</span><span class="crayon-sy">.</span><span class="crayon-i">Count</span> <span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-14" class="crayon-line crayon-striped-line"><span class="crayon-h">      </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span> <span class="crayon-s">“    Capacity: {0}”</span><span class="crayon-sy">,</span> <span class="crayon-v">myAL</span><span class="crayon-sy">.</span><span class="crayon-i">Capacity</span> <span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-15" class="crayon-line"><span class="crayon-h">      </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">Write</span><span class="crayon-sy">(</span> <span class="crayon-s">“    Values:”</span> <span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-16" class="crayon-line crayon-striped-line"><span class="crayon-h">      </span><span class="crayon-e">PrintValues</span><span class="crayon-sy">(</span> <span class="crayon-i">myAL</span> <span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-17" class="crayon-line"><span class="crayon-h">   </span><span class="crayon-sy">}</span></div><br><div id="crayon-5970cac634b58918629451-18" class="crayon-line crayon-striped-line"></div><br><div id="crayon-5970cac634b58918629451-19" class="crayon-line"><span class="crayon-h">   </span><span class="crayon-m">public</span> <span class="crayon-m">static</span> <span class="crayon-t">void</span> <span class="crayon-e">PrintValues</span><span class="crayon-sy">(</span> <span class="crayon-e">IEnumerable </span><span class="crayon-i">myList</span> <span class="crayon-sy">)</span><span class="crayon-h">  </span><span class="crayon-sy">{</span></div><br><div id="crayon-5970cac634b58918629451-20" class="crayon-line crayon-striped-line"><span class="crayon-h">      </span><span class="crayon-st">foreach</span> <span class="crayon-sy">(</span> <span class="crayon-t">Object</span> <span class="crayon-e">obj </span><span class="crayon-st">in</span> <span class="crayon-i">myList</span> <span class="crayon-sy">)</span></div><br><div id="crayon-5970cac634b58918629451-21" class="crayon-line"><span class="crayon-h">         </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">Write</span><span class="crayon-sy">(</span> <span class="crayon-s">“   {0}”</span><span class="crayon-sy">,</span> <span class="crayon-i">obj</span> <span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-22" class="crayon-line crayon-striped-line"><span class="crayon-h">      </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">WriteLine</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-23" class="crayon-line"><span class="crayon-h">      </span><span class="crayon-v">Console</span><span class="crayon-sy">.</span><span class="crayon-e">ReadKey</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><br><div id="crayon-5970cac634b58918629451-24" class="crayon-line crayon-striped-line"><span class="crayon-h">   </span><span class="crayon-sy">}</span></div>
+
+<h2 id="泛型List-lt-T-gt"><a href="#泛型List-lt-T-gt" class="headerlink" title="泛型List&lt;T&gt;"></a>泛型List&lt;T&gt;</h2></li>
+<li><p>解决ArrayList的缺点</p>
+</li>
+<li>ArrayList 类的泛型等效类</li>
+<li>大小可按需动态增加</li>
+<li>必须为其声明List集合内数据的对象类型</li>
+<li><p>可用委托&lt;&gt;<br><div><br><pre>`(1)声明 List&lt;T&gt;mlist = new List&lt;T&gt;();<br> eg: string[] Arr = {“a”,”b”,”c”};</pre></div></p>
+<pre><code>List&amp;lt;string&amp;gt; mlist = new List&amp;lt;string&amp;gt;(Arr);
+</code></pre><p>(2)添加一个元素 List.Add(T item)　<br>   eg: mlist.Add(“d”);<br>(3)添加集合元素<br>   eg: string[] Arr2 ={“f”,”g”.”h”};</p>
+<pre><code>mlist.AddRange(Arr2);
+</code></pre><p>(4)在index位置添加一个元素 Insert(int index,T item)<br>   eg: mlist.Insert(1,”p”);<br>(5)遍历List中元素<br>　　foreach(T element in mlist) T的类型与mlist声明时一样<br>　　　　　{<br>　　　　　　 Console.WriteLine(element);</p>
+<pre><code>      }
+eg:
+foreach(string s in mlist)
+      {
+         Console.WriteLine(s);
+       }
+</code></pre><p>(6)删除元素</p>
+<pre><code>List.Remove(T item) 删除一个值
+eg: mlist.Remove(&quot;a&quot;);
+List.RemoveAt(int index);删除下标为index的元素
+eg: mlist.RemoveAt(0);
+
+List.RemoveRange(int index,int count);　下标index开始，删除count个元素
+eg：mlist.RemoveRange(3,2);
+</code></pre><p>(7)判断某个元素是否在该List中</p>
+<pre><code>List.Contains(T item)　返回true或false
+eg:
+if(mlist.Contains&quot;(&quot;g&quot;))
+   Console.WriteLine(&quot;g存在列表中&quot;);
+else
+   mlist.Add(&quot;g&quot;);
+</code></pre><p>(8)给List里面元素排序 List.Sort()　默认是元素每一个字母按升序<br>   eg: mlist.Sort();<br>(9)给List里面元素顺序反转 List.Reverse() 可以与List.Sort()配合使用<br>(10)List清空 List.Clear()<br>   eg: mlist.Clear();<br>(11)获得List中元素数目 List.Count()　返回int值<br>   eg: mlist.count();</p>
+</li>
+</ul>
+<p><br>&nbsp;</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>多用List   foreach<br>参考<a href="https://msdn.microsoft.com/zh-cn/library/s6hkc2c4(v=vs.80).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/s6hkc2c4(v=vs.80).aspx</a></li>
+</ul>
+<p><a href="http://blog.csdn.net/zhangxinbin5/article/details/8987277" target="_blank" rel="external">http://blog.csdn.net/zhangxinbin5/article/details/8987277</a></p>
+<p>blog.jobbole.com/102452</p>
+<p><a href="https://msdn.microsoft.com/en-us/library/zecdkyw2(v=vs.110).aspx?cs-save-lang=1&amp;cs-lang=csharp#code-snippet-1" target="_blank" rel="external">https://msdn.microsoft.com/en-us/library/zecdkyw2(v=vs.110).aspx?cs-save-lang=1&amp;cs-lang=csharp#code-snippet-1</a></p>
+<p>&nbsp;</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2017/07/21/Net中 数组、 ArrayList、List、IList数组的区别/">.Net中 数组、 ArrayList、List、IList数组的区别</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">谢红光</a></p>
+        <p><span>Created:</span>2017-07-21, 09:05:22</p>
+        <p><span>Updated:</span>2017-07-27, 11:04:12</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2017/07/21/Net中 数组、 ArrayList、List、IList数组的区别/" title=".Net中 数组、 ArrayList、List、IList数组的区别">http://yoursite.com/2017/07/21/Net中 数组、 ArrayList、List、IList数组的区别/</a>
+            <span class="copy-path" data-clipboard-text="From http://yoursite.com/2017/07/21/Net中 数组、 ArrayList、List、IList数组的区别/　　By 谢红光" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/07/22/JavaScript原型、原型链/">
+                    JavaScript原型、原型链
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/07/20/http 请求与相应/">
+                    http 请求与相应
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#数组Array"><span class="toc-number">1.</span> <span class="toc-text">数组Array</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Array-forEach-函数"><span class="toc-number">1.1.</span> <span class="toc-text">Array.forEach 函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型List-lt-T-gt"><span class="toc-number">2.</span> <span class="toc-text">泛型List<T></span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":".Net中 数组、 ArrayList、List、IList数组的区别　| 茶壶盖　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+	 <!-- UY BEGIN -->
+    <section id="comments">
+        <div id="uyan_frame"></div>
+        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2141524"></script>
+    </section>
+    <!-- UY END -->
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/07/22/JavaScript原型、原型链/" title="Pre: JavaScript原型、原型链">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/07/20/http 请求与相应/" title="Next: http 请求与相应">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/08/15/C-static知识入门/">C# static知识入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/14/C-设计模式之单例模式入门/">C#设计模式之单例模式入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/12/内存管理入门/">C#内存管理入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/27/JavaScript变量提升、函数提升/">JavaScript变量提升、函数提升</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/24/googleaeb6e0d880b4c36a/">googleaeb6e0d880b4c36a</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/22/JavaScript原型、原型链/">JavaScript原型、原型链</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/21/Net中 数组、 ArrayList、List、IList数组的区别/">.Net中 数组、 ArrayList、List、IList数组的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/20/http 请求与相应/">http 请求与相应</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/08/ESLint 使用入门/">ESLint 使用入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/24/html实体编码问题/">html实体编码问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/13/以管理员身份运行bat文件/">以管理员身份运行bat文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/10/C# Socket 收发数据/">C# Socket 收发数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/net连接 mysql数据库以及 增删改查基本操作/">.net连接 mysql数据库以及 增删改查基本操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/windows server 2008 安装windows服务/">windows server 2008 安装windows服务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/15/如何调试Windows Service/">如何调试Windows Service</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/15/Windows Service服务程序开发/">Windows Service服务程序开发</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/thinkphp-timedate/">thinkphp--time()&&date()</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/23/简单的wpf登陆页面/">（一）简单的wpf登陆页面</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/slack关联gitlb/">slack关联gitlb</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/28/ThinkPHP实现数据增删改查/">ThinkPHP实现数据增删改查</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/MS Bot 与LUIS关联/">MS Bot 与LUIS关联</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/将bot发布到AZURE/">将bot发布到AZURE</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/C#中常用的几种读取XML文件的方法/">C#中常用的几种读取XML文件的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/如何搭建微软聊天机器人Microsoft bot Framework/">如何搭建微软聊天机器人Microsoft bot Framework ---get start</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/sql-server-存储过程入门以及C-简单调用/">sql server 存储过程入门（一）以及C#简单调用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/25/sql中case语句的用法浅谈/">sql中case语句的用法浅谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/C# 日期转化为获取时间戳/">C# 日期转化为获取时间戳</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/19/常用资源网站/">常用资源网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/17/100-e9-83-a8-e9-ab-98-e6-b8-85-e6-ac-a7-e7-be-8e-e5-89-a7-e8-b5-84-e6-ba-90360-e7-bd-91-e7-9b-98/">100部高清欧美剧资源[360网盘]</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/16/Sql Server 统计每天量/">Sql Server 统计每天量</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/13/gitlab-webhook-api/">Gitlab WebHook API</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/31/C# SQL server插入数据/">C# SQL server插入数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/30/C# ExecuteNonQuery()/">C# ExecuteNonQuery()</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/29/web-api/">web api入门及部分问题（搭建）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/26/react-selectdialog/">React Select&Dialog</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/C# 发邮件Email/">C# 发邮件Email</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/C# string 详解/">C# string 详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/React State随笔/">React State随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/17/React-D3 Axis属性/">React-D3 Axis属性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/12/Gitlab WebHook本地获取json数据（含有BuildEvents字段）/">Gitlab WebHook本地获取json数据（含有BuildEvents字段）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/C#写入文件/">C#写入文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/SQL处理时间/">SQL处理时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/07/React 常见问题/">React 常见问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/06/fetch连接AZURE数据库/">fetch连接AZURE数据库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/04/VS（远程）链接SQLserver 数据库/">VS（远程）链接SQLserver 数据库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/正则表达式/">正则表达式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/教你如何删除Word空白页/">教你如何删除Word空白页</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/02/如何在代码中写SQL语句/">如何在代码中写SQL语句</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 谢红光
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 6;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

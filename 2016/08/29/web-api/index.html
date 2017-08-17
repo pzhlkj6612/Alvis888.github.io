@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="谢红光" />
+
+
+
+<meta name="description" content="整个暑假一直在做一个数据统计类型的网站，我负责写基于Web Api框架的后台代码。 ASP.NET Web API 是一种框架，用于轻松构建可以访问多种客户端（包括浏览器和移动设备）的 HTTP 服务。 ASP.NET Web API 是一种用于在 .NET Framework 上构建 RESTful 应用程序的理想平台。 直接进入正题： S1. 首先创建一个asp.net web应用程序（我本机">
+<meta name="keywords" content="C#,web,web api,搭建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web api入门及部分问题（搭建）">
+<meta property="og:url" content="http://yoursite.com/2016/08/29/web-api/index.html">
+<meta property="og:site_name" content="茶壶盖">
+<meta property="og:description" content="整个暑假一直在做一个数据统计类型的网站，我负责写基于Web Api框架的后台代码。 ASP.NET Web API 是一种框架，用于轻松构建可以访问多种客户端（包括浏览器和移动设备）的 HTTP 服务。 ASP.NET Web API 是一种用于在 .NET Framework 上构建 RESTful 应用程序的理想平台。 直接进入正题： S1. 首先创建一个asp.net web应用程序（我本机">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416155825.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416160009.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416160125.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416162423.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416162640.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/13.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/2.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/742.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA63.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416170318.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/123.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/70936.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416172525.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416172721.png">
+<meta property="og:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416172909.png">
+<meta property="og:updated_time" content="2017-07-23T01:04:50.341Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="web api入门及部分问题（搭建）">
+<meta name="twitter:description" content="整个暑假一直在做一个数据统计类型的网站，我负责写基于Web Api框架的后台代码。 ASP.NET Web API 是一种框架，用于轻松构建可以访问多种客户端（包括浏览器和移动设备）的 HTTP 服务。 ASP.NET Web API 是一种用于在 .NET Framework 上构建 RESTful 应用程序的理想平台。 直接进入正题： S1. 首先创建一个asp.net web应用程序（我本机">
+<meta name="twitter:image" content="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416155825.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="茶壶盖" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/img/dog.jpg">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>web api入门及部分问题（搭建） | 茶壶盖</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/dog.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">谢红光</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="/xiehongguang0228@gmail.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/Alvis888" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa StackOverflow" href="https://stackoverflow.com/users/6244981/xiehongguang" title="StackOverflow"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/NET/">.NET</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/360云/">360云</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AZURE/">AZURE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Axis属性/">Axis属性</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bt/">Bt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Build-Event/">Build Event</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-写入文件/">C#写入文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CURD/">CURD</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ESLint/">ESLint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Email/">Email</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ExecuteNonQuery/">ExecuteNonQuery ()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Json/">Json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LUIS/">LUIS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-D3-Axis/">React-D3 Axis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL-server/">SQL server</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Socket/">Socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS/">VS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/">XML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bat/">bat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bot/">bot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bot-framework/">bot framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c-c/">c/c++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/case语句/">case语句</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/date/">date()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dialog/">dialog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fetch/">fetch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fetch链接数据库/">fetch链接数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gitlab/">gitlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hook/">hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/html/">html</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/material-ui/">material ui</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/microsoft-bot/">microsoft bot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node-js/">node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/office/">office</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/qq/">qq</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react/">react</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react-native/">react native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rn/">rn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sate/">sate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/select/">select</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server-2008/">server 2008</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service/">service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/slack/">slack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sqlserver/">sqlserver</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql日期加减/">sql日期加减</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql日期格式化/">sql日期格式化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/static/">static</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/string/">string</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thinkphp/">thinkphp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/time/">time()</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-api/">web api</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webhook/">webhook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webhook，Gitlab/">webhook，Gitlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-service/">windows service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/word/">word</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wpf/">wpf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/内存管理/">内存管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/删除/">删除</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图片库/">图片库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串/">字符串</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/存储过程/">存储过程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/实体形式/">实体形式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/弹窗/">弹窗</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/截取/">截取</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/搭建/">搭建</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库，AZURE/">数据库，AZURE</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/时间戳/">时间戳</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/电影/">电影</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/登陆页面/">登陆页面</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/种子/">种子</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/空白页/">空白页</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网盘搜索/">网盘搜索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网站/">网站</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/美剧/">美剧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/选择框/">选择框</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/邮件/">邮件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/链接/">链接</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">谢红光</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/dog.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">谢红光</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="/xiehongguang0228@gmail.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/Alvis888" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa StackOverflow" target="_blank" href="https://stackoverflow.com/users/6244981/xiehongguang" title="StackOverflow"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-web-api" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/29/web-api/" class="article-date">
+      <time datetime="2016-08-29T07:30:45.000Z" itemprop="datePublished">2016-08-29</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      web api入门及部分问题（搭建）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/web-api/">web api</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C#</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/">web</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web-api/">web api</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/搭建/">搭建</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>整个暑假一直在做一个数据统计类型的网站，我负责写基于Web Api框架的后台代码。</p>
+<p><span id="mt1" class="sentence" data-source="ASP.NET Web API is a framework that makes it easy to build HTTP services that reach a broad range of clients, including browsers and mobile devices." data-guid="9af6ce626d60218be98820a4ac4397e6">ASP.NET Web API 是一种框架，用于轻松构建可以访问多种客户端（包括浏览器和移动设备）的 HTTP 服务。 </span><span id="mt2" class="sentence" data-source="ASP.NET Web API is an ideal platform for building RESTful applications on the .NET Framework." data-guid="099121e050c18cbae77589e9c407dab9">ASP.NET Web API 是一种用于在 .NET Framework 上构建 RESTful 应用程序的理想平台。</span></p>
+<p>直接进入正题：</p>
+<p>S1. 首先创建一个asp.net web应用程序（我本机用的是vs 2015）</p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416155825.png" alt="QQ截图20160416155825"></p>
+<p>根据自己的需要选择路径，点击确定</p>
+<p>S2. 接下来选择空模板，核心引用选择Web API，点击确定，一个空模板就建成了</p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416160009.png" alt="QQ截图20160416160009"></p>
+<p>到这一步，代码框架基本上已经搭建好，下面是一些简单应用。</p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416160125.png" alt="QQ截图20160416160125"></p>
+<p>可以看到上图，默认的目录结构跟MVC差不多，只是少了View，因为View在这里是没又什么作用的。空模板建成，之后就需要添加我们需要的代码了。</p>
+<p>主要的代码需要再Models以及Controllers中添加！Modles主要定义数据，Controllers则是方法的集合。另外除此之外，还有需要注意的地方就是App_Start文件夹下有一个名字叫做WebApiConfig.cs的文件，里面有一个系统已经默认的路由设置，我们可以直接用这个路由设置，也可以自己写路由，具体会在后面的地方说到！</p>
+<p><span style="color: #ff0000;">》》创建实体类</span></p>
+<p>在Models文件夹下添加类，名称为LogInfo.cs，前面提到过，Models是定义数据的，所以添加代码如下：（当然，数据的定义也可以不在Models下，可以直接写在Controllers方法中，但是这样写的话最直观的会增加代码量，降低效率，另外也不方便重用，直接单独在Models中定义数据，可以减少很多不必要的麻烦）(可不加)</p>
+<p><div class="codecolorer-container csharp mac-classic"></div></p>
+<p><table cellspacing="0" cellpadding="0"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td class="line-numbers"></td></p>
+<p><div>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8</div></p>
+<p><td></td></p>
+<p><div class="csharp codecolorer"><span class="kw1">public</span> <span class="kw4">class</span> LogInfo<br><span class="br0">{</span><br><span class="kw1">public</span> <span class="kw4">string</span> CILogId <span class="br0">{</span> get<span class="sy0">;</span> set<span class="sy0">;</span> <span class="br0">}</span><br><span class="kw1">public</span> <span class="kw4">string</span> ProjectName <span class="br0">{</span> get<span class="sy0">;</span> set<span class="sy0">;</span> <span class="br0">}</span><br><span class="kw1">public</span> <span class="kw4">string</span> CommitVersion <span class="br0">{</span> get<span class="sy0">;</span> set<span class="sy0">;</span> <span class="br0">}</span><br><span class="kw1">public</span> <span class="kw4">string</span> Submitter <span class="br0">{</span> get<span class="sy0">;</span> set<span class="sy0">;</span> <span class="br0">}</span><span class="br0">}</span></div><br><br><br><br><span style="color: #ff0000;">》》创建Controller方法控制器</span></p>
+<p><br>然后右键Controllers文件夹，添加LogInfoControllers.cs,当然也可以不用名字相对应，但是当controller文件以及models数据文件多的时候，名字操作相对应显得尤为重要，好的代码习惯可以节省很多时间。</p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416162423.png" alt="QQ截图20160416162423"></p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416162640.png" alt="QQ截图20160416162640"></p>
+<p>选择web Api 控制器-空（否则整个代码框架会发生很大变化），点击确定，更改名字为LogInfoControllers.cs，添加代码</p>
+<p><div class="codecolorer-container csharp mac-classic"></div></p>
+<p><table cellspacing="0" cellpadding="0"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td class="line-numbers"></td></p>
+<p><div>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21</div></p>
+<p><td></td></p>
+<div class="csharp codecolorer">
+
+<p>List<span class="sy0">&amp;</span>lt<span class="sy0">;</span>LogInfo<span class="sy0">&amp;</span>gt<span class="sy0">;</span> LogInfos <span class="sy0">=</span> <a href="http://www.google.com/search?q=new+msdn.microsoft.com" target="_blank" rel="external"><span class="kw3">new</span></a> List<span class="sy0">&amp;</span>lt<span class="sy0">;</span>LogInfo<span class="sy0">&amp;</span>gt<span class="sy0">;</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span></p>
+<p><span class="kw1">public</span> LogInfoController<span class="br0">(</span><span class="br0">)</span><br><span class="br0">{</span></p>
+<p>LogInfos<span class="sy0">.</span><span class="me1">Add</span><span class="br0">(</span><a href="http://www.google.com/search?q=new+msdn.microsoft.com" target="_blank" rel="external"><span class="kw3">new</span></a> LogInfo <span class="br0">{</span><br>CILogId <span class="sy0">=</span><span class="st0">“00001”</span>,<br>ProjectName<span class="sy0">=</span><span class="st0">“Demo”</span>,<br>CommitVersion <span class="sy0">=</span> <span class="st0">“1234”</span>,<br>Submitter <span class="sy0">=</span> <span class="st0">“xiaoming”</span></p>
+<p><span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span><br><span class="br0">}</span></p>
+<p><span class="co1">//获取所有数据接口</span><br><span class="kw1">public</span> List<span class="sy0">&amp;</span>lt<span class="sy0">;</span>LogInfo<span class="sy0">&amp;</span>gt<span class="sy0">;</span> GetAllLogInfo<span class="br0">(</span><span class="br0">)</span><br><span class="br0">{</span><br><span class="kw1">return</span> LogInfos<span class="sy0">;</span><br><span class="br0">}</span></p>
+<p><span class="co1">//end</span></p>
+<p></p></div><br><br><br><br><br>注意在粘贴List&lt;LogInfo&gt; LogInfos = new List&lt;LogInfo&gt;()后，会看到报错，是因为没有进行引用，直接添加对数据文件的引用就行。<p></p>
+<p><span style="color: #ff0000;">》》Router配置</span></p>
+<p>在项目的app_start有一个WebApiConfig.cs文件，里面定义了默认路由，代码是这样的</p>
+<p><div class="codecolorer-container csharp mac-classic"></div></p>
+<p><table cellspacing="0" cellpadding="0"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td class="line-numbers"></td></p>
+<p><div>1<br>2<br>3<br>4<br>5</div></p>
+<p><td></td></p>
+<p><div class="csharp codecolorer">config<span class="sy0">.</span><span class="me1">Routes</span><span class="sy0">.</span><span class="me1">MapHttpRoute</span><span class="br0">(</span><br>name<span class="sy0">:</span> <span class="st0">“DefaultApi”</span>,<br>routeTemplate: “api/{controller}/{action}/{id}”,<br>defaults<span class="sy0">:</span> <a href="http://www.google.com/search?q=new+msdn.microsoft.com" target="_blank" rel="external"><span class="kw3">new</span></a> <span class="br0">{</span> id <span class="sy0">=</span> RouteParameter<span class="sy0">.</span><span class="me1">Optional</span> <span class="br0">}</span><br><span class="br0">)</span><span class="sy0">;</span></div><br><br><br><br><br>代码中的api就是地址中的api，{controller}对应的是Controllers文件夹下面的文件去掉controller后缀的名字，比如之前定义了一个LogInfoController.cs，那么去掉后缀就是LogInfo，刚好就是地址中的LogInfo，至于{id}是函数的参数，由于本函数并没有参数，那么就不用写。如果带参数，则用英文问号（“？”）连接{action}和{id},多个参数则用逻辑与（&amp;）符号来连接{id}</p>
+<p><a href="http://localhost:53035/api/group/GetGroupMembersName?groupname=fgig" target="_blank" rel="external">http://localhost:53035/api/group/GetGroupMembersName?groupname=fgig</a></p>
+<p>LogInfoController()是构造函数，主要给数据进行初始化，当然在平时项目中不可能像这样直接进行赋值，很多情况下需要连接数据库进行数据的检索获取，然后再进行赋值操作，这里为了简便，我就直接对其进行赋值！</p>
+<p>而在GetAllLogInfo()中直接返回LogInfos信息，当远程访问的时候执行这个函数，就可以获得相应的数据！</p>
+<p>其他文件不用更改，这样一个最简单的web api就实现了，只要部署一下就可以直接从远端获取数据了。当然，除了获取数据之外，还有从远端post，delete等一些基本的操作，这里就只列出一个get方法。</p>
+<p><span style="color: #ff0000;">》》实现webapi访问</span></p>
+<p>下面就是部署，直接可以远程访问数据。对于web api来说，他的部署有两种承载的方式，一个是自身承载，一个就是用iis部署，在vs中有自带的承载器，我们这里主要介绍windows系统的iis承载方法。</p>
+<p>在用iis承载之前，要首先确定你的电脑iis是否已经开启！</p>
+<p>（win7为例）</p>
+<p>可以 依次点击  开始&gt;控制面板&gt;程序</p>
+<p><strong><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/13.png" alt="13"></strong></p>
+<p>找到“程序和功能”,点击<strong>打开或关闭Windows功能</strong></p>
+<p><strong> </strong><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/2.png" alt="2"></p>
+<p>进入到“打开或关闭Windows功能”页面后，找到”Internet信息服务“一栏，点击”<strong>Internet信息服务</strong>“前面的”<strong>+</strong>“将其自目录全部展开，分别将<strong>FTP、服务器、web管理工具、万维网服务</strong>目录下的所有选项进行勾选，最后点击”<strong>确定</strong>“即可。</p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/742.png" alt="742"></p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA63.png" alt="QQ截63"></p>
+<p>这样 iis功能就已经开启了！</p>
+<p>然后在开始&gt;程序搜索框里输入“iis”，找到iis应用软件，并打开，下面就可以进行部署web api了。</p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416170318.png" alt="QQ截图20160416170318"></p>
+<p>右击网站&gt;添加网站</p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/123.png" alt="123"></p>
+<p>网站名字自己按照需要取，应用程序池选择默认就行，物理路径则是刚刚建立项目的物理地址（需要注意的是，物理地址的下一层是有bin文件的那一层，如下图，否则无法识别）</p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/70936.png" alt="70936"></p>
+<p>ip地址分配本机的ip地址，端口选择一个没有正在使用的端口，比如11112，点击确定。</p>
+<p>这样就已经部署好了一个web api ，但是现在你还缺少一个访问权限，这时候就需要你手动添加允许权限，最简单的解决方法就是：右击之前建立的项目&gt;属性&gt;安全&gt;编辑&gt;添加，在输入对象名称来选择框中输入“everyone”，</p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416172525.png" alt="QQ截图20160416172525"></p>
+<p>点击检查名称&gt;确认</p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416172721.png" alt="QQ截图20160416172721"></p>
+<p>将修改，完全控制勾上</p>
+<p>大功告成！</p>
+<p><span style="color: #ff0000;">换台电脑，直接输入地址  <strong><a href="http://ip地址:端口号/api/LogInfo" target="_blank" rel="external">http://ip地址:端口号/api/LogInfo</a></strong></span></p>
+<p>就可以直接看到在代码中的数据</p>
+<p><img src="http://www.cuichongyang.cn/wp-content/uploads/2016/04/QQ%E6%88%AA%E5%9B%BE20160416172909.png" alt="QQ截图20160416172909"></p>
+<p>最后解释一下地址：ip地址：端口号就是在添加网站的时候自己添加上的</p>
+<p><a href="http://www.cuichongyang.cn/index.php/2016/04/16/web-api/" target="_blank" rel="external">http://www.cuichongyang.cn/index.php/2016/04/16/web-api/</a></p>
+<p>&nbsp;</p>
+<h3 id="错误分析："><a href="#错误分析：" class="headerlink" title="错误分析："></a>错误分析：</h3><p>1.您被禁止访问互联网</p>
+<p>我第一次搭建的时候，换了无数个端口，总是提示 <span style="color: #ff0000;">您被禁止访问互联网<span style="color: #000000;">，经过排查，端口也没有被占用，防火墙也已经关闭（只有80端口可以访问），查了好长时间也没有解决这个问题。</span></span></p>
+<p>思来想去，组可能是安全软件禁止出80以外的端口访问网络。经排查发现是“<span style="color: #ff0000;">净网大师</span>”导致，后来联系客服人员反映情况，才知道<span style="color: #ff0000;">Version&gt;3.5</span>的软件为了加大广告拦截效果关闭了电脑部分权限。</p>
+<p><strong>解决方法</strong>：关闭安全类软件、关闭防火墙</p>
+<p>2.“/”应用程序错误</p>
+<p><pre><span style="color: red;">行 1:  &lt;%@ Application Codebehind=”Global.asax.cs” Inherits=”LuckyGitlabStatWebAPI.WebApiApplication” Language=”C#” %&gt;</span></pre><br><strong>解决方法</strong>：重新生成解决方案</p>
+<p>&nbsp;</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2016/08/29/web-api/">web api入门及部分问题（搭建）</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">谢红光</a></p>
+        <p><span>Created:</span>2016-08-29, 15:30:45</p>
+        <p><span>Updated:</span>2017-07-23, 09:04:50</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2016/08/29/web-api/" title="web api入门及部分问题（搭建）">http://yoursite.com/2016/08/29/web-api/</a>
+            <span class="copy-path" data-clipboard-text="From http://yoursite.com/2016/08/29/web-api/　　By 谢红光" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/08/30/C# ExecuteNonQuery()/">
+                    C# ExecuteNonQuery()
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/08/26/react-selectdialog/">
+                    React Select&amp;Dialog
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#错误分析："><span class="toc-number">1.</span> <span class="toc-text">错误分析：</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"web api入门及部分问题（搭建）　| 茶壶盖　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+	 <!-- UY BEGIN -->
+    <section id="comments">
+        <div id="uyan_frame"></div>
+        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2141524"></script>
+    </section>
+    <!-- UY END -->
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/08/30/C# ExecuteNonQuery()/" title="Pre: C# ExecuteNonQuery()">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/08/26/react-selectdialog/" title="Next: React Select&amp;Dialog">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/08/15/C-static知识入门/">C# static知识入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/14/C-设计模式之单例模式入门/">C#设计模式之单例模式入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/12/内存管理入门/">C#内存管理入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/27/JavaScript变量提升、函数提升/">JavaScript变量提升、函数提升</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/24/googleaeb6e0d880b4c36a/">googleaeb6e0d880b4c36a</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/22/JavaScript原型、原型链/">JavaScript原型、原型链</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/21/Net中 数组、 ArrayList、List、IList数组的区别/">.Net中 数组、 ArrayList、List、IList数组的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/20/http 请求与相应/">http 请求与相应</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/08/ESLint 使用入门/">ESLint 使用入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/24/html实体编码问题/">html实体编码问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/13/以管理员身份运行bat文件/">以管理员身份运行bat文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/10/C# Socket 收发数据/">C# Socket 收发数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/net连接 mysql数据库以及 增删改查基本操作/">.net连接 mysql数据库以及 增删改查基本操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/14/windows server 2008 安装windows服务/">windows server 2008 安装windows服务</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/15/如何调试Windows Service/">如何调试Windows Service</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/15/Windows Service服务程序开发/">Windows Service服务程序开发</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/thinkphp-timedate/">thinkphp--time()&&date()</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/23/简单的wpf登陆页面/">（一）简单的wpf登陆页面</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/slack关联gitlb/">slack关联gitlb</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/28/ThinkPHP实现数据增删改查/">ThinkPHP实现数据增删改查</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/MS Bot 与LUIS关联/">MS Bot 与LUIS关联</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/将bot发布到AZURE/">将bot发布到AZURE</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/C#中常用的几种读取XML文件的方法/">C#中常用的几种读取XML文件的方法</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/18/如何搭建微软聊天机器人Microsoft bot Framework/">如何搭建微软聊天机器人Microsoft bot Framework ---get start</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/17/sql-server-存储过程入门以及C-简单调用/">sql server 存储过程入门（一）以及C#简单调用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/25/sql中case语句的用法浅谈/">sql中case语句的用法浅谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/22/C# 日期转化为获取时间戳/">C# 日期转化为获取时间戳</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/19/常用资源网站/">常用资源网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/17/100-e9-83-a8-e9-ab-98-e6-b8-85-e6-ac-a7-e7-be-8e-e5-89-a7-e8-b5-84-e6-ba-90360-e7-bd-91-e7-9b-98/">100部高清欧美剧资源[360网盘]</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/16/Sql Server 统计每天量/">Sql Server 统计每天量</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/13/gitlab-webhook-api/">Gitlab WebHook API</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/31/C# SQL server插入数据/">C# SQL server插入数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/30/C# ExecuteNonQuery()/">C# ExecuteNonQuery()</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/29/web-api/">web api入门及部分问题（搭建）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/26/react-selectdialog/">React Select&Dialog</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/C# 发邮件Email/">C# 发邮件Email</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/C# string 详解/">C# string 详解</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/22/React State随笔/">React State随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/17/React-D3 Axis属性/">React-D3 Axis属性</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/12/Gitlab WebHook本地获取json数据（含有BuildEvents字段）/">Gitlab WebHook本地获取json数据（含有BuildEvents字段）</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/C#写入文件/">C#写入文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/10/SQL处理时间/">SQL处理时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/07/React 常见问题/">React 常见问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/06/fetch连接AZURE数据库/">fetch连接AZURE数据库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/04/VS（远程）链接SQLserver 数据库/">VS（远程）链接SQLserver 数据库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/正则表达式/">正则表达式</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/03/教你如何删除Word空白页/">教你如何删除Word空白页</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/02/如何在代码中写SQL语句/">如何在代码中写SQL语句</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 谢红光
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 6;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

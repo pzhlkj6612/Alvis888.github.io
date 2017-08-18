@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="直接甩干货 控制台应用程序 using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Data.SqlClient; using System.Data; using MySql.Data.MySqlClient; namespace ConsoleAppli">
-<meta name="keywords" content="SQL,.NET,mysql">
+<meta name="description" content="&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;Transact-SQL中的存储过程，非常类似于编程语言中的方法，它可以重复调用。当存储过程执行一次后，可以将语句缓存中，这样下次执行的时候直接使用缓存中的语句。这样就可以提高存储过程的性能。 基本概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;存储过程是由SQL 语句和控制流程语句构成的语句块（语句集合）。他不仅可以输入参数，还可以输出参数。存">
+<meta name="keywords" content="sqlserver,存储过程">
 <meta property="og:type" content="article">
-<meta property="og:title" content=".net连接 mysql数据库以及 增删改查基本操作">
-<meta property="og:url" content="http://yoursite.com/2017/03/25/net连接 mysql数据库以及 增删改查基本操作/index.html">
+<meta property="og:title" content="sql server 存储过程入门（一）以及C#简单调用">
+<meta property="og:url" content="http://yoursite.com/2016/10/17/sql-server-存储过程入门-一以及C-简单调用/index.html">
 <meta property="og:site_name" content="茶壶盖">
-<meta property="og:description" content="直接甩干货 控制台应用程序 using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Data.SqlClient; using System.Data; using MySql.Data.MySqlClient; namespace ConsoleAppli">
+<meta property="og:description" content="&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;Transact-SQL中的存储过程，非常类似于编程语言中的方法，它可以重复调用。当存储过程执行一次后，可以将语句缓存中，这样下次执行的时候直接使用缓存中的语句。这样就可以提高存储过程的性能。 基本概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;存储过程是由SQL 语句和控制流程语句构成的语句块（语句集合）。他不仅可以输入参数，还可以输出参数。存">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-07-23T02:17:32.459Z">
+<meta property="og:updated_time" content="2017-08-18T01:59:47.309Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content=".net连接 mysql数据库以及 增删改查基本操作">
-<meta name="twitter:description" content="直接甩干货 控制台应用程序 using System; using System.Collections.Generic; using System.Linq; using System.Text; using System.Data.SqlClient; using System.Data; using MySql.Data.MySqlClient; namespace ConsoleAppli">
+<meta name="twitter:title" content="sql server 存储过程入门（一）以及C#简单调用">
+<meta name="twitter:description" content="&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;Transact-SQL中的存储过程，非常类似于编程语言中的方法，它可以重复调用。当存储过程执行一次后，可以将语句缓存中，这样下次执行的时候直接使用缓存中的语句。这样就可以提高存储过程的性能。 基本概念&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;存储过程是由SQL 语句和控制流程语句构成的语句块（语句集合）。他不仅可以输入参数，还可以输出参数。存">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>.net连接 mysql数据库以及 增删改查基本操作 | 茶壶盖</title>
+<title>sql server 存储过程入门（一）以及C#简单调用 | 茶壶盖</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -262,11 +262,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-net连接 mysql数据库以及 增删改查基本操作" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-sql-server-存储过程入门-一以及C-简单调用" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/25/net连接 mysql数据库以及 增删改查基本操作/" class="article-date">
-      <time datetime="2017-03-25T09:56:15.000Z" itemprop="datePublished">2017-03-25</time>
+      <a href="/2016/10/17/sql-server-存储过程入门-一以及C-简单调用/" class="article-date">
+      <time datetime="2016-10-17T09:31:12.000Z" itemprop="datePublished">2016-10-17</time>
 </a>
 
 
@@ -281,7 +281,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      .net连接 mysql数据库以及 增删改查基本操作
+      sql server 存储过程入门（一）以及C#简单调用
     </h1>
   
 
@@ -289,14 +289,10 @@
       
       <div class="article-info article-info-post">
         
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/SQL/">SQL</a>
-    </div>
-
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NET/">.NET</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/">SQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sqlserver/">sqlserver</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/存储过程/">存储过程</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -306,64 +302,146 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>直接甩干货 控制台应用程序</p>
-<pre><code>using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.SqlClient;
-using System.Data;
-using MySql.Data.MySqlClient;
-namespace ConsoleApplication3
+        <p>&ensp;&ensp;&ensp;&ensp;Transact-SQL中的存储过程，非常类似于编程语言中的方法，它可以重复调用。当存储过程执行一次后，可以将语句缓存中，这样下次执行的时候直接使用缓存中的语句。这样就可以提高存储过程的性能。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>&ensp;&ensp;&ensp;&ensp;存储过程是由SQL 语句和控制流程语句构成的语句块（语句集合）。他不仅可以输入参数，还可以输出参数。存储过程可以通过接收参数向调用者返回结果集，结果集的格式由调用者确定。可以在存储过程中调用另一个存储过程</p>
+<h2 id="创建存储过程并SSMS中执行"><a href="#创建存储过程并SSMS中执行" class="headerlink" title="创建存储过程并SSMS中执行"></a>创建存储过程并SSMS中执行</h2><h3 id="使用-SQL-Server-Management-Studio"><a href="#使用-SQL-Server-Management-Studio" class="headerlink" title="使用 SQL Server Management Studio"></a>使用 SQL Server Management Studio</h3><ol>
+<li>在 “对象资源管理器”中，连接到 数据库引擎 的实例，然后展开该实例。</li>
+<li>依次展开 “数据库”、 AdventureWorks2012 数据库和 “可编程性”。</li>
+<li>右键单击“存储过程”，再单击“新建存储过程”。</li>
+<li>在 “查询” 菜单上，单击 “指定模板参数的值”。</li>
+<li>在 “指定模板参数的值” 对话框中，输入下列所示的参数值。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>值  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>author</td>
+<td>作者  </td>
+</tr>
+<tr>
+<td>Create date</td>
+<td>创建日期</td>
+</tr>
+<tr>
+<td>Descript</td>
+<td>介绍</td>
+</tr>
+<tr>
+<td>Procedure_name</td>
+<td>GetXHG</td>
+</tr>
+<tr>
+<td>@Param1</td>
+<td>@UserName</td>
+</tr>
+<tr>
+<td>@Datatype_For_Param1</td>
+<td>nchar(100)</td>
+</tr>
+<tr>
+<td>Default_Value_For_Param1</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>@Param2</td>
+<td></td>
+</tr>
+<tr>
+<td>@Datatype_For_Param2</td>
+<td></td>
+</tr>
+<tr>
+<td>Default_Value_For_Param2</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>点击“确定”</li>
+<li><p>在<strong>查询编辑器</strong>中，试用一下语句代替SELECT 语句</p>
+<pre><code>SELECT password,email,sex,RANK,groupname,isdelete,buildtime  
+from Member  
+where UserName = @username
+</code></pre></li>
+</ol>
+<ol>
+<li>若要测试语法，请在 “查询” 菜单上，单击 “分析”。 如果返回错误消息，则请将这些语句与上述信息进行比较，并视需要进行更正。</li>
+<li>若要创建该过程，请在 “查询” 菜单上单击 “执行”。 该过程作为数据库中的对象创建。</li>
+<li>若要查看在对象资源管理器中列出的过程，请右键单击“存储过程”，然后选择“刷新”。</li>
+<li>若要运行该过程，请在对象资源管理器中右键单击存储过程名称 GetXHG，然后选择“执行存储过程”。</li>
+<li>在“执行过程”窗口中，输入 xiehongguang 作为参数 @UserName 的值。<br>&ensp;&ensp;&ensp;&ensp;</li>
+</ol>
+<h3 id="使用-Transact-SQL-在查询编辑器中创建过程"><a href="#使用-Transact-SQL-在查询编辑器中创建过程" class="headerlink" title="使用 Transact-SQL 在查询编辑器中创建过程"></a>使用 Transact-SQL 在查询编辑器中创建过程</h3><ol>
+<li>在 “对象资源管理器”中，连接到 数据库引擎的实例。  </li>
+<li>从 “文件” 菜单中，单击 “新建查询”。</li>
+<li><p>将以下示例复制并粘贴到查询窗口中，然后单击 “执行”。 该示例将使用其他过程名称创建与上述相同的存储过程。</p>
+<pre><code>USE LuckyGitlabStats;  
+GO  
+CREATE PROCEDURE GetXHG   
+    @UserName nchar(100)  
+AS   
+    SELECT password,email,sex,RANK,groupname,isdelete,buildtime  
+    from Member  
+    where UserName = @username;  
+GO  
+</code></pre></li>
+<li><p>若要运行该过程，请将以下示例复制并粘贴到一个新的查询窗口中，然后单击 “执行”。 请注意，将显示指定参数值的不同方法。</p>
+<pre><code>[USE Lucky;]  
+[GO]
+
+EXECUTE GetXHG N&apos;xiehongguang&apos;;  
+-- Or  
+EXEC dbo.GetXHG @username = N&apos;xiehongguang&apos;;  
+GO  
+-- Or  
+EXECUTE GetXHG @username = N&apos;xiehongguang&apos;;  
+GO 
+</code></pre></li>
+</ol>
+<h2 id="C-调用执行"><a href="#C-调用执行" class="headerlink" title="C# 调用执行"></a>C# 调用执行</h2><pre><code>public List&lt;Member&gt; gettest()
 {
-    class Program
+    List&lt;Member&gt; members = new List&lt;Member&gt;();
+    ConnectLocalSQL connectLocaldb = new ConnectLocalSQL();
+    SqlConnection conn = connectLocaldb.ConnectDataBase();
+    //打开数据库
+    conn.Open();
+    //创建查询语句
+    SqlCommand querySingleInfo = conn.CreateCommand();
+    querySingleInfo.CommandText = &quot;GetXHG&quot;;
+    querySingleInfo.CommandType = System.Data.CommandType.StoredProcedure;
+
+    //querySingleInfo.Parameters.Add(&quot;@username&quot;, SqlDbType.NChar);
+    //querySingleInfo.Parameters[&quot;@username&quot;].Value = &quot;xiehongguang&quot;;
+
+    querySingleInfo.Parameters.AddWithValue(&quot;@username&quot;, &quot;xiehongguang&quot;);
+    SqlDataReader userInfoReader = querySingleInfo.ExecuteReader();
+    //有多行数据，用while循环
+    while (userInfoReader.Read())
     {
-        private static MySqlConnection connectDataBase()
-        {
-            string str = &quot;Server=12*.11*.2*.*;User ID=*u*h*ng;Password=y*u*h*ng**;Database=yo*s*a*g;CharSet=utf8;convert zero datetime=True;&quot;;
-            MySqlConnection conn = new MySqlConnection(str);
-            return conn;
-        }//end connectDataBase()
-
-        static void Main(string[] args)
-        {
-            // Connect to the master database and create the sample database
-            using (MySqlConnection conn = connectDataBase())
-            {
-                conn.Open();
-
-                //查询
-                using (MySqlCommand querySingleInfo = conn.CreateCommand())
-                {
-                    querySingleInfo.CommandText = &quot;select business_category from multi_config where id=1 &quot;;
-                    using (MySqlDataReader reader = querySingleInfo.ExecuteReader())
-                    {
-                        // Loop over the results 
-                        while (reader.Read())
-                        {
-                            Console.WriteLine(reader[&quot;business_category&quot;].ToString().Trim());
-                          //  Console.ReadKey();
-                        }
-                    }
-                }
-
-                ///更新  添加  删除
-                using (MySqlCommand myCommand = conn.CreateCommand())
-                {
-                    myCommand.Connection = conn;
-                    myCommand.CommandText = &quot;update multi_config set service_status=-1 where id=10&quot;;
-                    int ans = myCommand.ExecuteNonQuery();
-                    Console.WriteLine(ans);
-                    Console.ReadKey();
-                }
-            }
-
-        }//end Main()
-
-    }//end class Program
-
-}
-</code></pre><p><br>&nbsp;</p>
+        Member member = new Member();
+      // member.username = userInfoReader[&quot;UserName&quot;].ToString().Trim();
+        member.password = userInfoReader[&quot;Password&quot;].ToString().Trim();
+        member.email = userInfoReader[&quot;Email&quot;].ToString().Trim();
+        member.sex = userInfoReader[&quot;Sex&quot;].ToString().Trim();
+        member.rank = userInfoReader[&quot;Rank&quot;].ToString().Trim();
+        member.groupName = userInfoReader[&quot;Groupname&quot;].ToString().Trim();
+        member.isdelete = userInfoReader[&quot;IsDelete&quot;].ToString().Trim();
+        members.Add(member);
+    }
+    //关闭查询
+    userInfoReader.Close();
+    //关闭数据库连接
+    conn.Close();
+    return members;
+} 
+</code></pre><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
+<p><a href="https://docs.microsoft.com/zh-cn/sql/relational-databases/stored-procedures/create-a-stored-procedure" target="_blank" rel="external">https://docs.microsoft.com/zh-cn/sql/relational-databases/stored-procedures/create-a-stored-procedure</a><br><a href="https://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlcommand(v=vs.110).aspx" target="_blank" rel="external">https://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlcommand(v=vs.110).aspx</a><br>《SQL 查询的艺术》</p>
+</blockquote>
 
       
     </div>
@@ -372,13 +450,13 @@ namespace ConsoleApplication3
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2017/03/25/net连接 mysql数据库以及 增删改查基本操作/">.net连接 mysql数据库以及 增删改查基本操作</a></p>
+        <p><span>Title:</span><a href="/2016/10/17/sql-server-存储过程入门-一以及C-简单调用/">sql server 存储过程入门（一）以及C#简单调用</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage">谢红光</a></p>
-        <p><span>Created:</span>2017-03-25, 17:56:15</p>
-        <p><span>Updated:</span>2017-07-23, 10:17:32</p>
+        <p><span>Created:</span>2016-10-17, 17:31:12</p>
+        <p><span>Updated:</span>2017-08-18, 09:59:47</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2017/03/25/net连接 mysql数据库以及 增删改查基本操作/" title=".net连接 mysql数据库以及 增删改查基本操作">http://yoursite.com/2017/03/25/net连接 mysql数据库以及 增删改查基本操作/</a>
-            <span class="copy-path" data-clipboard-text="From http://yoursite.com/2017/03/25/net连接 mysql数据库以及 增删改查基本操作/　　By 谢红光" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2016/10/17/sql-server-存储过程入门-一以及C-简单调用/" title="sql server 存储过程入门（一）以及C#简单调用">http://yoursite.com/2016/10/17/sql-server-存储过程入门-一以及C-简单调用/</a>
+            <span class="copy-path" data-clipboard-text="From http://yoursite.com/2016/10/17/sql-server-存储过程入门-一以及C-简单调用/　　By 谢红光" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -391,15 +469,15 @@ namespace ConsoleApplication3
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/04/10/C# Socket 收发数据/">
-                    C# Socket 收发数据
+                <a href="/2016/10/18/如何搭建微软聊天机器人Microsoft bot Framework/">
+                    如何搭建微软聊天机器人Microsoft bot Framework ---get start
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/03/14/windows server 2008 安装windows服务/">
-                    windows server 2008 安装windows服务
+                <a href="/2016/09/25/sql中case语句的用法浅谈/">
+                    sql中case语句的用法浅谈
                 </a>
             </div>
         
@@ -411,7 +489,7 @@ namespace ConsoleApplication3
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本概念"><span class="toc-number">1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建存储过程并SSMS中执行"><span class="toc-number">2.</span> <span class="toc-text">创建存储过程并SSMS中执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-SQL-Server-Management-Studio"><span class="toc-number">2.1.</span> <span class="toc-text">使用 SQL Server Management Studio</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-Transact-SQL-在查询编辑器中创建过程"><span class="toc-number">2.2.</span> <span class="toc-text">使用 Transact-SQL 在查询编辑器中创建过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-调用执行"><span class="toc-number">3.</span> <span class="toc-text">C# 调用执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-number">3.1.</span> <span class="toc-text">参考</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -447,7 +525,7 @@ namespace ConsoleApplication3
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":".net连接 mysql数据库以及 增删改查基本操作　| 茶壶盖　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"sql server 存储过程入门（一）以及C#简单调用　| 茶壶盖　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -473,7 +551,7 @@ namespace ConsoleApplication3
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/04/10/C# Socket 收发数据/" title="Pre: C# Socket 收发数据">
+            <a href="/2016/10/18/如何搭建微软聊天机器人Microsoft bot Framework/" title="Pre: 如何搭建微软聊天机器人Microsoft bot Framework ---get start">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -481,7 +559,7 @@ namespace ConsoleApplication3
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/03/14/windows server 2008 安装windows服务/" title="Next: windows server 2008 安装windows服务">
+            <a href="/2016/09/25/sql中case语句的用法浅谈/" title="Next: sql中case语句的用法浅谈">
                 <i class="fa fa-angle-right"></i>
             </a>
         

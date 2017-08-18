@@ -138,13 +138,13 @@
                 <div class="tips-box hide">
                     <div class="tips-arrow"></div>
                     <ul class="tips-inner">
-                        <li>菜单</li>
-                        <li>标签</li>
+                        <li>Menu</li>
+                        <li>Tags</li>
                         
-                        <li>友情链接</li>
+                        <li>Friends</li>
                         
                         
-                        <li>关于我</li>
+                        <li>About Me</li>
                         
                     </ul>
                 </div>
@@ -260,9 +260,143 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Sql Server 统计每天量" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/16/Sql Server 统计每天量/" class="article-date">
+      <time datetime="2016-09-16T04:11:02.000Z" itemprop="datePublished">2016-09-16</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/16/Sql Server 统计每天量/">Sql Server 统计每天量</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p><strong>一、通过天数叠加进行统计</strong></p>
+<p><strong>使用 CONVERT（，，）方法将日期精确到日期，然后用DATEADD（，，）方法进行天数叠加</strong></p>
+<p>发此方法是用最简单的SQL语句进行统计，分别统计出1天内、2天内、3天内的总的数据记录，然后通过for循环进行减运算，最后得出每天的数据量。此种方法最大的弊端就是时间复杂度太高，而需要遍历n多次数据库才能的得到最终结果。</p>
+<pre><code> public List&amp;lt;int&amp;gt; GetCommitTotal_Personally_ByDay(string username, int queryDays)
+    {
+        List&amp;lt;int&amp;gt; list = new List&amp;lt;int&amp;gt;();
+        SqlConnection conn = connectLocaldb.ConnectDataBase();
+        //打开数据库
+        conn.Open();
+        //创建查询语句
+        SqlCommand querySingleInfo = conn.CreateCommand();
+
+        for (int i = 0; i &amp;lt; queryDays; i++)
+        {
+            querySingleInfo.CommandText = &quot;SELECT COUNT(*) as times FROM MemberCommitBeforeCompiling where UserName=&quot; + &quot;&apos;&quot; + username + &quot;&apos;AND DATEADD(d,-&quot; + i + &quot;, CONVERT(varchar(12), getdate(), 111)) &amp;lt;= CONVERT(varchar(12), CommitTime, 111) &quot;;
+
+            using (SqlDataReader reader = querySingleInfo.ExecuteReader())
+            {
+                // Loop over the results 
+                while (reader.Read())
+                {
+                    memberCommit.times = reader[&quot;times&quot;].ToString().Trim();
+                    num[i] = int.Parse(memberCommit.times);
+                }
+            }
+        }
+        list.Add(num[0]);
+        if (queryDays &amp;gt; 1)
+        {
+            for (int i = 1; i &amp;lt; queryDays; i++)
+            {
+                list.Add(num[i] - num[i - 1]);
+            }
+        }
+        list.Reverse();
+        //关闭数据库连接
+        conn.Close();
+        return list;
+    }`&lt;/pre&gt;
+**二、格式化数据类型，直接查询**。
+
+**使用 CONVERT（，，）方法直接格式化精确到日期**
+
+相比于第一种，在时间上得到了很大的优化，只需一次查询就可以得到准确数据。弊端是，如果数据库中没有该日期的数据计划，则不返回数据，所以每一次操作都需要对所得数据进行一次遍历。相对于时间上的优化，这个弊端可以忽略不计。
+&lt;pre&gt;`  public Dictionary&amp;lt;int,int&amp;gt; GetCommitByDays(string username,int querydays)
+    {
+        //以当前日作第一天，0代表今天
+        querydays--;
+        Dictionary&amp;lt;int, int&amp;gt; commitNumber = new Dictionary&amp;lt;int, int&amp;gt;();
+        //连接本地数据库
+        SqlConnection conn = connectLocaldb.ConnectDataBase();
+        //打开数据库
+        conn.Open();
+        //创建查询语句
+        SqlCommand querySingleInfo = conn.CreateCommand();
+        querySingleInfo.CommandText = &quot;SELECT CONVERT(varchar(12), CommitTime, 112) as queryKey, COUNT(CONVERT(varchar(12), CommitTime, 112)) as queryValue FROM MemberCommitBeforeCompiling  where UserName=&quot; + &quot;&apos;&quot; + username + &quot;&apos; and DATEADD(d,-&quot;+querydays+&quot;, CONVERT(varchar(12), getdate(), 112)) &amp;lt;= CONVERT(varchar(12), CommitTime, 112)  group by CONVERT(varchar(12), CommitTime, 112) order by CONVERT(varchar(12), CommitTime, 112)desc&quot;;
+        SqlDataReader singleInfoReader = querySingleInfo.ExecuteReader();
+        //有多行数据，用while循环
+        while (singleInfoReader.Read())
+        {
+            int key =int.Parse( singleInfoReader[&quot;queryKey&quot;].ToString().Trim());
+            int value= int.Parse(singleInfoReader[&quot;queryValue&quot;].ToString().Trim());
+            commitNumber.Add(key, value);
+        }
+        //关闭查询
+        singleInfoReader.Close();
+        //关闭数据库连接
+        conn.Close();
+        return commitNumber;
+    }
+</code></pre><p>&nbsp;</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/SQL/">SQL</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NET/">.NET</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/">SQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL-server/">SQL server</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-gitlab-webhook-api" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1497,180 +1631,6 @@ POP3：pop.china.com    SMTP：smtp.china.com      SMTP端口号：25
 
 
   
-    <article id="post-Gitlab WebHook本地获取json数据（含有BuildEvents字段）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/08/12/Gitlab WebHook本地获取json数据（含有BuildEvents字段）/" class="article-date">
-      <time datetime="2016-08-12T12:48:58.000Z" itemprop="datePublished">2016-08-12</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/12/Gitlab WebHook本地获取json数据（含有BuildEvents字段）/">Gitlab WebHook本地获取json数据（含有BuildEvents字段）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <p>当Gitlab中有动作触发时，就会触动 WebHook（钩子），Webhook也会随之返回一个Json数据， 可以根据这个json数据来实时监控项目工程，在Gitlab的Help中给出了很多字段，但唯独没有显性给出BuildEvents字段：</p>
-<pre><code>{
-
-    “brfore_sha”:””,
-
-    “build_allow_failure”:””,
-
-    “build_duration”:””,
-
-    “build_finished_at”:””,
-
-    “build_id”:””,
-
-    “build_name”:””,
-
-    “build_stage”:””,
-
-    “build_started_at”:””,
-
-    “build_status”:””,
-
-    “commit”:
-
-    {
-
-        “author_email”:””,
-
-        “author_name”:””,
-
-        “duration”:””,
-
-        “finished_at”:””,
-
-        “id”:””,
-
-        “message”:””,
-
-        “sha”:””,
-
-        “started_at”:””,
-
-        “status”:””
-
-    },
-
-    “object_kind”:””,
-
-    “project_id”:””,
-
-    “project_name”:””,
-
-    “ref”:”master”,
-
-    “repository”:
-
-    {
-
-        “description”:””,
-
-        “git_http_url”:””,
-
-        “git_ssh_url”:””,
-
-        “homepage”:””,
-
-        “name”:””,
-
-        “url”:””,
-
-        “visibility_level”:””
-
-    },
-
-    “sha”:””,
-
-    “tag”:””,
-
-    “user”:
-
-        {
-
-            “email”:””,
-
-            “id”:””,
-
-            “name”:””
-
-        }
-
-}
-</code></pre><p>但只有样例字段还是远远不够的，因为某些字段的含义我们很难理解（build中before_sha表示version，），此时就需要输出自己的代码build返回的json数据。在help中也有相应的方法代码，在此翻译一下，供以后使用，毕竟“好记性不如烂笔头”</p>
-<p>S1 . 配置Ruby环境（安装Ruby软件时，点击第二个复选框（自动配置PATH））</p>
-<p>S2. 建文本文件，粘贴代码，保存为<span style="color: #ff0000;">print_http_body.rb</span></p>
-<pre><code>require &apos;webrick&apos;
-
-server = WEBrick::HTTPServer.new(:Port =&gt; ARGV.first)
-server.mount_proc &apos;/&apos; do |req, res|
-  puts req.body
-end
-
-trap &apos;INT&apos; do
-  server.shutdown
-end
-server.start
-</code></pre><p>S3. 在文件所在目录下打开Cmd， 编辑 ruby print_http_body.rb 8000（8000是未被占用的端口）</p>
-<p>S4. 在webhook receiver中添加Event，<a href="http://my.host:8000/" target="_blank" rel="external">http://my.host:8000/</a> （my.host表示IP）</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>完成以上4步后，触发相关的时间，就会在Cmd页面中输出对应的Json数据。</p>
-<p>例如，如果创建的是IssueEvent，则，创建新的Issue或对已有的Issue操作时，就会在Cmd页面输出Json数据</p>
-<p><strong>注：点击<span style="color: #ff0000;">Test</span>按钮，返回的均是Push的json数据，所以在测试API时出现错误很正常</strong>（保证代码正确的前提下，修改数据实体类的字段即可）</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/web-api/">web api</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Build-Event/">Build Event</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Json/">Json</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webhook，Gitlab/">webhook，Gitlab</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
@@ -1685,14 +1645,14 @@ server.start
                 2016-2017 谢红光
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -1701,7 +1661,7 @@ server.start
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -1734,9 +1694,9 @@ server.start
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window

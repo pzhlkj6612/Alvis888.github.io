@@ -138,13 +138,13 @@
                 <div class="tips-box hide">
                     <div class="tips-arrow"></div>
                     <ul class="tips-inner">
-                        <li>菜单</li>
-                        <li>标签</li>
+                        <li>Menu</li>
+                        <li>Tags</li>
                         
-                        <li>友情链接</li>
+                        <li>Friends</li>
                         
                         
-                        <li>关于我</li>
+                        <li>About Me</li>
                         
                     </ul>
                 </div>
@@ -260,9 +260,205 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-sql-server-存储过程入门-二" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/18/sql-server-存储过程入门-二/" class="article-date">
+      <time datetime="2017-08-18T01:59:28.000Z" itemprop="datePublished">2017-08-18</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/18/sql-server-存储过程入门-二/">sql server 存储过程入门(二)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="指定参数"><a href="#指定参数" class="headerlink" title="指定参数"></a>指定参数</h2><p>&ensp;&ensp;&ensp;&ensp;通过指定过程参数，调用程序可以将值传递给过程的主体。 在执行过程期间，这些值可以用于各种目的。 如果将参数标记为 OUTPUT 参数，则过程参数还可以将值返回给调用程序。一个过程最多可以有 2100 个参数，每个参数都有名称、数据类型和方向。 还可以为参数指定默认值（可选）。</p>
+<h3 id="将值传递给参数"><a href="#将值传递给参数" class="headerlink" title="将值传递给参数"></a>将值传递给参数</h3><pre><code>-- 常量 
+use LuckyGitlabStats
+go
+exec GetMember &apos;webapp&apos;,2
+-- 变量  类型和创建时保持一致   set赋值，可以用sql server 自带的参数
+declare @groupname nchar(100), @rank nchar(10)  --声明变量
+set @groupname=&apos;webapp&apos;;  --变量赋值
+set @rank=2
+exec GetMember @groupname , @rank   --执行存储过程
+</code></pre><h3 id="指定参数名称、类型"><a href="#指定参数名称、类型" class="headerlink" title="指定参数名称、类型"></a>指定参数名称、类型</h3><p>&ensp;&ensp;&ensp;&ensp;创建存储过程、声明参数时，参数名称必须以单个@字符开头，并且在过程范围内必须唯一。<br>  &ensp;&ensp;&ensp;&ensp;必须使用数据类型定义参数。 参数的数据类型确定了在调用过程时该参数所接受值的类型和范围。<br>  &ensp;&ensp;&ensp;&ensp;显式命名参数并将相应的值赋给过程调用中的每个参数允许按任意顺序提供参数。 例如，如果过程 my_proc 应有三个参数，分别命名为 @first、 @second和 @third，则可以将传递到该过程的值赋给参数名称，例如：</p>
+<pre><code>EXECUTE my_proc @second = 2, @first = 1, @third = 3;
+</code></pre><p><strong>注意</strong></p>
+<pre><code>如果以 @parameter =value 格式提供了一个参数值，则必须按此格式提供所有的后续参数。   
+如果未以 @parameter =value 格式传递参数值，则必须按 CREATE PROCEDURE 语句中所列的参数顺序（从左到右）提供值。
+</code></pre><h3 id="指定参数的默认值"><a href="#指定参数的默认值" class="headerlink" title="指定参数的默认值"></a>指定参数的默认值</h3><p>  &ensp;&ensp;&ensp;&ensp;如果在声明参数时指定了默认值，则参数被视为可选的。 在过程调用中不需要为可选参数提供值。<br>在以下情况下使用参数的默认值：</p>
+<ol>
+<li>在过程调用中未指定参数值。</li>
+<li>在过程调用中将 DEFAULT 关键字指定为值。</li>
+</ol>
+<p>&ensp;&ensp;&ensp;&ensp;如果没有合适的值可以指定为参数的默认值，则指定 NULL 为默认值。 如果在未提供参数值的情况下执行过程，最好让过程返回自定义的消息。</p>
+<p>存储过程GetMember,添加默认值判断</p>
+<pre><code>USE [LuckyGitlabStats]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[GetMember] 
+    -- Add the parameters for the stored procedure here
+    @Groupname nchar(100) = null, 
+    @Rank nchar(10) = null
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+    if @Groupname IS NULL
+    begin
+        PRINT &apos;ERROR: You must specify the name of your group.&apos;  
+       RETURN  
+    end
+    -- Insert statements for procedure here
+    SELECT * from Member
+    where Groupname=@Groupname  and RANK = @Rank
+END
+
+
+-- 执行存储过程
+use LuckyGitlabStats
+go
+--exec GetMember &apos;webapp&apos; , 2
+declare  
+    @rank nchar(10),
+    @Username nchar(100),
+    @groupname nchar(100);
+ set @rank=2
+ set @groupname=&apos;webapp&apos;
+EXECUTE  GetMember  &apos;webapp&apos;,2 ,@Username  OUTPUT  
+select @UserName
+
+--输出   RROR: You must specify the name of your group.
+</code></pre><h3 id="输出参数的方向"><a href="#输出参数的方向" class="headerlink" title="输出参数的方向"></a>输出参数的方向</h3><p>&ensp;&ensp;&ensp;&ensp;参数的方向可以为输入（表明将值传递给过程的主体），也可以为输出（表明过程将值返回给调用程序）。 <strong>默认为输入参数</strong>。<br>&ensp;&ensp;&ensp;&ensp;若要指定输出参数，必须在 CREATE PROCEDURE 语句的参数定义中指定 OUTPUT 关键字。 当过程退出时，它向调用程序返回输出参数的当前值。 执行过程时，调用程序也必须使用 OUTPUT 关键字，才能将该参数值保存到可以在调用程序中使用的变量中。<br>给修改上方例子添加一个输出参数 @Username</p>
+<pre><code>USE [LuckyGitlabStats]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[GetMember] 
+    -- Add the parameters for the stored procedure here
+    @Groupname nchar(100) = null, 
+    @Rank nchar(10) output ,
+    @Username nchar(100) OUTPUT
+AS
+BEGIN
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+    if @Groupname IS NULL
+    begin
+        PRINT &apos;ERROR: You must specify the last name of the sales person.&apos;  
+       RETURN  
+    end
+    -- Insert statements for procedure here
+    SELECT * from Member
+    where Groupname=@Groupname and RANK=@Rank
+
+    select @Username = username 
+    from Member 
+    where Groupname=@Groupname  and RANK=@Rank
+    order by UserName desc
+END
+
+
+-- 执行存储过程
+
+go
+--exec GetMember &apos;webapp&apos; , 2
+declare -- @rank nchar(10),
+     @Username nchar(100);
+ -- @groupname nchar(100);
+
+-- set @rank=2
+-- set @groupname=&apos;webapp&apos;
+EXECUTE  GetMember  &apos;webapp&apos;,2 ,@Username  OUTPUT  
+select @UserName
+</code></pre><p><strong>注意</strong>  </p>
+<pre><code>经测试，一个输出参数，只能返回一个值，当返回一个结果集时，会**按照字典序显示首元素**
+</code></pre><h2 id="C-获取SQL-Server-print-结果"><a href="#C-获取SQL-Server-print-结果" class="headerlink" title="C# 获取SQL Server print 结果"></a>C# 获取SQL Server print 结果</h2><pre><code>static public void ExecuteStoredProc()
+{
+    var connectionString = @&quot;sql&quot;;
+    using (var connection = new SqlConnection(connectionString))
+    using (var command = new SqlCommand(&quot;GetMember&quot;, connection))
+    {
+        command.CommandType = CommandType.StoredProcedure;
+        command.Parameters.AddWithValue(&quot;@rank&quot;, &quot;2&quot;);
+
+        connection.Open();
+        // wire up an event handler to the connection.InfoMessage event
+        connection.InfoMessage += connection_InfoMessage;
+        var result = command.ExecuteNonQuery();
+        connection.Close();
+    }
+}
+
+static void connection_InfoMessage(object sender, SqlInfoMessageEventArgs e)
+{
+    // this gets the print statements (maybe the error statements?)
+    var outputFromStoredProcedure = e.Message;
+    Console.WriteLine(e.Message);
+}
+</code></pre><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><blockquote>
+<p><a href="https://docs.microsoft.com/zh-cn/sql/relational-databases/stored-procedures/specify-parameters" target="_blank" rel="external">https://docs.microsoft.com/zh-cn/sql/relational-databases/stored-procedures/specify-parameters</a><br>《sql的查询艺术》</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sqlserver/">sqlserver</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/存储过程/">存储过程</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-C-static知识入门" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1761,132 +1957,6 @@ Cookie：存储于客户端扩展字段，向同一域名的服务端发送属�
 
 
   
-    <article id="post-html实体编码问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/04/24/html实体编码问题/" class="article-date">
-      <time datetime="2017-04-24T06:08:48.000Z" itemprop="datePublished">2017-04-24</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/24/html实体编码问题/">html实体编码问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <p>在进行web端与客户端交互时，发现传来的json数据发生了实体编码，导致无法直接进行解析，需要进行一次转化   方法：</p>
-<pre><code>&lt;span class=&quot;pln&quot;&gt;html_entity_decode()&lt;/span&gt;`&lt;/pre&gt;
-&lt;pre class=&quot;lang-php prettyprint prettyprinted&quot;&gt;`&lt;span class=&quot;pun&quot;&gt;
-&amp;lt;?&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;php
-   $str &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;str&quot;&gt;&quot;{&amp;amp;quot;NickName&amp;amp;quot;:&amp;amp;quot;Tom&amp;amp;quot;}&quot;&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;
-   echo $text &lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt; html_entity_decode&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;$str&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;
-   echo &lt;/span&gt;&lt;span class=&quot;str&quot;&gt;&quot;\n&quot;&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;pln&quot;&gt;
-   echo json_decode&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;str&quot;&gt;&quot;$text&quot;&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;)-&amp;gt;&lt;/span&gt;&lt;span class=&quot;typ&quot;&gt;NickName&lt;/span&gt;&lt;span class=&quot;pun&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;pun&quot;&gt;?&amp;gt;&lt;/span&gt;
-</code></pre><p>网上查了一点资料，供以后参考</p>
-<p>以下资料参考地址：<a href="http://blog.csdn.net/wusuopubupt/article/details/8817826" target="_blank" rel="external">http://blog.csdn.net/wusuopubupt/article/details/8817826</a></p>
-<p>提示：请直接按CTRL+F搜索您要查找的转义字符。</p>
-<p>常用表：</p>
-<p><table cellspacing="0" cellpadding="4" align="center"></table></p>
-<p><tbody></tbody></p>
-<p><tr></tr></p>
-<p><th>No.</th></p>
-<p><th>文字表記</th></p>
-<p><th nowrap="nowrap">10進表記</th></p>
-<p><th nowrap="nowrap">16進表記</th></p>
-<p><th nowrap="nowrap">文字</th></p>
-<p><th nowrap="nowrap"></th></p>
-<p><th nowrap="nowrap">Comment</th><br></p>
-<p><tr></tr></p>
-<p><th>001</th></p>
-<p><td>&amp;quot;</td></p>
-<p><td nowrap="nowrap">&amp;#34;</td></p>
-<p><td nowrap="nowrap">&amp;#x22;</td></p>
-<p><th nowrap="nowrap">“””</th></p>
-<p><td nowrap="nowrap"></td></p>
-<p><td>quotation mark = APL quote</td><br></p>
-<p><tr></tr></p>
-<p><th>002</th></p>
-<p><td>&amp;amp;</td></p>
-<p><td nowrap="nowrap">&amp;#38;</td></p>
-<p><td nowrap="nowrap">&amp;#x26;</td></p>
-<p><th nowrap="nowrap">“&amp;”</th></p>
-<p><td nowrap="nowrap"></td></p>
-<p><td>ampersand</td><br></p>
-<p><tr></tr></p>
-<p><th>003</th></p>
-<p><td>&amp;lt;</td></p>
-<p><td nowrap="nowrap">&amp;#60;</td></p>
-<p><td nowrap="nowrap">&amp;#x3C;</td></p>
-<p><th nowrap="nowrap">“&lt;”</th></p>
-<p><td nowrap="nowrap"></td></p>
-<p><td>less-than sign</td><br></p>
-<p><tr></tr></p>
-<p><th>004</th></p>
-<p><td>&amp;gt;</td></p>
-<p><td nowrap="nowrap">&amp;#62;</td></p>
-<p><td nowrap="nowrap">&amp;#x3E;</td></p>
-<p><th nowrap="nowrap">“&gt;”</th></p>
-<p><td nowrap="nowrap"></td></p>
-<p><td>greater-than sign</td><br></p>
-<p><tr></tr></p>
-<p><th>005</th></p>
-<p><td>&amp;nbsp;</td></p>
-<p><td nowrap="nowrap">&amp;#160;</td></p>
-<p><td nowrap="nowrap">&amp;#xA0;</td></p>
-<p><th nowrap="nowrap">“ “</th></p>
-<p><td nowrap="nowrap"></td></p>
-<p><td>no-break space = non-breaking space</td><br><br><br></p>
-<div id="main"><br><div id="tables"><br><div id="left"><br><br>## <a name="t0"></a>iSO 8859-1 characters<br><br><table class="sym      "><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c"></td><br><td id="sym">&amp;nbsp;</td><br></tr><br><tr><br><td id="c">¡</td><br><td id="sym">&amp;iexcl;</td><br></tr><br><tr><br><td id="c">¢</td><br><td id="sym">&amp;cent;</td><br></tr><br><tr><br><td id="c">£</td><br><td id="sym">&amp;pound;</td><br></tr><br><tr><br><td id="c">¤</td><br><td id="sym">&amp;curren;</td><br></tr><br><tr><br><td id="c">¥</td><br><td id="sym">&amp;yen;</td><br></tr><br><tr><br><td id="c">¦</td><br><td id="sym">&amp;brvbar;</td><br></tr><br><tr><br><td id="c">§</td><br><td id="sym">&amp;sect;</td><br></tr><br><tr><br><td id="c">¨</td><br><td id="sym">&amp;uml;</td><br></tr><br><tr><br><td id="c">©</td><br><td id="sym">&amp;copy;</td><br></tr><br><tr><br><td id="c">ª</td><br><td id="sym">&amp;ordf;</td><br></tr><br><tr><br><td id="c">«</td><br><td id="sym">&amp;laquo;</td><br></tr><br><tr><br><td id="c">¬</td><br><td id="sym">&amp;not;</td><br></tr><br><tr><br><td id="c"></td><br><td id="sym">&amp;shy;</td><br></tr><br><tr><br><td id="c">®</td><br><td id="sym">&amp;reg;</td><br></tr><br><tr><br><td id="c">¯</td><br><td id="sym">&amp;macr;</td><br></tr><br><tr><br><td id="c">°</td><br><td id="sym">&amp;deg;</td><br></tr><br><tr><br><td id="c">±</td><br><td id="sym">&amp;plusmn;</td><br></tr><br><tr><br><td id="c">²</td><br><td id="sym">&amp;sup2;</td><br></tr><br><tr><br><td id="c">³</td><br><td id="sym">&amp;sup3;</td><br></tr><br><tr><br><td id="c">´</td><br><td id="sym">&amp;acute;</td><br></tr><br><tr><br><td id="c">µ</td><br><td id="sym">&amp;micro;</td><br></tr><br><tr><br><td id="c">¶</td><br><td id="sym">&amp;para;</td><br></tr><br><tr><br><td id="c">·</td><br><td id="sym">&amp;middot;</td><br></tr><br><tr><br><td id="c">¸</td><br><td id="sym">&amp;cedil;</td><br></tr><br><tr><br><td id="c">¹</td><br><td id="sym">&amp;sup1;</td><br></tr><br><tr><br><td id="c">º</td><br><td id="sym">&amp;ordm;</td><br></tr><br><tr><br><td id="c">»</td><br><td id="sym">&amp;raquo;</td><br></tr><br><tr><br><td id="c">¼</td><br><td id="sym">&amp;frac14;</td><br></tr><br><tr><br><td id="c">½</td><br><td id="sym">&amp;frac12;</td><br></tr><br><tr><br><td id="c">¾</td><br><td id="sym">&amp;frac34;</td><br></tr><br><tr><br><td id="c">¿</td><br><td id="sym">&amp;iquest;</td><br></tr><br><tr><br><td id="c">À</td><br><td id="sym">&amp;Agrave;</td><br></tr><br><tr><br><td id="c">Á</td><br><td id="sym">&amp;Aacute;</td><br></tr><br><tr><br><td id="c">Â</td><br><td id="sym">&amp;Acirc;</td><br></tr><br><tr><br><td id="c">Ã</td><br><td id="sym">&amp;Atilde;</td><br></tr><br><tr><br><td id="c">Ä</td><br><td id="sym">&amp;Auml;</td><br></tr><br><tr><br><td id="c">Å</td><br><td id="sym">&amp;Aring;</td><br></tr><br><tr><br><td id="c">Æ</td><br><td id="sym">&amp;AElig;</td><br></tr><br><tr><br><td id="c">Ç</td><br><td id="sym">&amp;Ccedil;</td><br></tr><br><tr><br><td id="c">È</td><br><td id="sym">&amp;Egrave;</td><br></tr><br><tr><br><td id="c">É</td><br><td id="sym">&amp;Eacute;</td><br></tr><br><tr><br><td id="c">Ê</td><br><td id="sym">&amp;Ecirc;</td><br></tr><br><tr><br><td id="c">Ë</td><br><td id="sym">&amp;Euml;</td><br></tr><br><tr><br><td id="c">Ì</td><br><td id="sym">&amp;Igrave;</td><br></tr><br><tr><br><td id="c">Í</td><br><td id="sym">&amp;Iacute;</td><br></tr><br><tr><br><td id="c">Î</td><br><td id="sym">&amp;Icirc;</td><br></tr><br><tr><br><td id="c">Ï</td><br><td id="sym">&amp;Iuml;</td><br></tr><br><tr><br><td id="c">Ð</td><br><td id="sym">&amp;ETH;</td><br></tr><br><tr><br><td id="c">Ñ</td><br><td id="sym">&amp;Ntilde;</td><br></tr><br><tr><br><td id="c">Ò</td><br><td id="sym">&amp;Ograve;</td><br></tr><br><tr><br><td id="c">Ó</td><br><td id="sym">&amp;Oacute;</td><br></tr><br><tr><br><td id="c">Ô</td><br><td id="sym">&amp;Ocirc;</td><br></tr><br><tr><br><td id="c">Õ</td><br><td id="sym">&amp;Otilde;</td><br></tr><br><tr><br><td id="c">Ö</td><br><td id="sym">&amp;Ouml;</td><br></tr><br><tr><br><td id="c">×</td><br><td id="sym">&amp;times;</td><br></tr><br><tr><br><td id="c">Ø</td><br><td id="sym">&amp;Oslash;</td><br></tr><br><tr><br><td id="c">Ù</td><br><td id="sym">&amp;Ugrave;</td><br></tr><br><tr><br><td id="c">Ú</td><br><td id="sym">&amp;Uacute;</td><br></tr><br><tr><br><td id="c">Û</td><br><td id="sym">&amp;Ucirc;</td><br></tr><br><tr><br><td id="c">Ü</td><br><td id="sym">&amp;Uuml;</td><br></tr><br><tr><br><td id="c">Ý</td><br><td id="sym">&amp;Yacute;</td><br></tr><br><tr><br><td id="c">Þ</td><br><td id="sym">&amp;THORN;</td><br></tr><br><tr><br><td id="c">ß</td><br><td id="sym">&amp;szlig;</td><br></tr><br><tr><br><td id="c">à</td><br><td id="sym">&amp;agrave;</td><br></tr><br><tr><br><td id="c">á</td><br><td id="sym">&amp;aacute;</td><br></tr><br><tr><br><td id="c">â</td><br><td id="sym">&amp;acirc;</td><br></tr><br><tr><br><td id="c">ã</td><br><td id="sym">&amp;atilde;</td><br></tr><br><tr><br><td id="c">ä</td><br><td id="sym">&amp;auml;</td><br></tr><br><tr><br><td id="c">å</td><br><td id="sym">&amp;aring;</td><br></tr><br><tr><br><td id="c">æ</td><br><td id="sym">&amp;aelig;</td><br></tr><br><tr><br><td id="c">ç</td><br><td id="sym">&amp;ccedil;</td><br></tr><br><tr><br><td id="c">è</td><br><td id="sym">&amp;egrave;</td><br></tr><br><tr><br><td id="c">é</td><br><td id="sym">&amp;eacute;</td><br></tr><br><tr><br><td id="c">ê</td><br><td id="sym">&amp;ecirc;</td><br></tr><br><tr><br><td id="c">ë</td><br><td id="sym">&amp;euml;</td><br></tr><br><tr><br><td id="c">ì</td><br><td id="sym">&amp;igrave;</td><br></tr><br><tr><br><td id="c">í</td><br><td id="sym">&amp;iacute;</td><br></tr><br><tr><br><td id="c">î</td><br><td id="sym">&amp;icirc;</td><br></tr><br><tr><br><td id="c">ï</td><br><td id="sym">&amp;iuml;</td><br></tr><br><tr><br><td id="c">ð</td><br><td id="sym">&amp;eth;</td><br></tr><br><tr><br><td id="c">ñ</td><br><td id="sym">&amp;ntilde;</td><br></tr><br><tr><br><td id="c">ò</td><br><td id="sym">&amp;ograve;</td><br></tr><br><tr><br><td id="c">ó</td><br><td id="sym">&amp;oacute;</td><br></tr><br><tr><br><td id="c">ô</td><br><td id="sym">&amp;ocirc;</td><br></tr><br><tr><br><td id="c">õ</td><br><td id="sym">&amp;otilde;</td><br></tr><br><tr><br><td id="c">ö</td><br><td id="sym">&amp;ouml;</td><br></tr><br><tr><br><td id="c">÷</td><br><td id="sym">&amp;divide;</td><br></tr><br><tr><br><td id="c">ø</td><br><td id="sym">&amp;oslash;</td><br></tr><br><tr><br><td id="c">ù</td><br><td id="sym">&amp;ugrave;</td><br></tr><br><tr><br><td id="c">ú</td><br><td id="sym">&amp;uacute;</td><br></tr><br><tr><br><td id="c">û</td><br><td id="sym">&amp;ucirc;</td><br></tr><br><tr><br><td id="c">ü</td><br><td id="sym">&amp;uuml;</td><br></tr><br><tr><br><td id="c">ý</td><br><td id="sym">&amp;yacute;</td><br></tr><br><tr><br><td id="c">þ</td><br><td id="sym">&amp;thorn;</td><br></tr><br><tr><br><td id="c">ÿ</td><br><td id="sym">&amp;yuml;</td><br></tr><br></tbody><br></table><br></div><br><div id="center"><br><br>## <a name="t1"></a>Math symbols<br><br><table class="sym      "><caption id="sym">Latin Extended-B</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">ƒ</td><br><td id="sym">&amp;fnof;</td><br></tr><br></tbody><br></table><br><div></div><br><table class="sym      "><caption id="sym">Arrows</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">←</td><br><td id="sym">&amp;larr;</td><br></tr><br><tr><br><td id="c">↑</td><br><td id="sym">&amp;uarr;</td><br></tr><br><tr><br><td id="c">→</td><br><td id="sym">&amp;rarr;</td><br></tr><br><tr><br><td id="c">↓</td><br><td id="sym">&amp;darr;</td><br></tr><br><tr><br><td id="c">↔</td><br><td id="sym">&amp;harr;</td><br></tr><br><tr><br><td id="c">↵</td><br><td id="sym">&amp;crarr;</td><br></tr><br><tr><br><td id="c">⇐</td><br><td id="sym">&amp;lArr;</td><br></tr><br><tr><br><td id="c">⇑</td><br><td id="sym">&amp;uArr;</td><br></tr><br><tr><br><td id="c">⇒</td><br><td id="sym">&amp;rArr;</td><br></tr><br><tr><br><td id="c">⇓</td><br><td id="sym">&amp;dArr;</td><br></tr><br><tr><br><td id="c">⇔</td><br><td id="sym">&amp;hArr;</td><br></tr><br></tbody><br></table><br><div></div><br><table class="sym      "><caption id="sym">Mathematical Operators</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">∀</td><br><td id="sym">&amp;forall;</td><br></tr><br><tr><br><td id="c">∂</td><br><td id="sym">&amp;part;</td><br></tr><br><tr><br><td id="c">∃</td><br><td id="sym">&amp;exist;</td><br></tr><br><tr><br><td id="c">∅</td><br><td id="sym">&amp;empty;</td><br></tr><br><tr><br><td id="c">∇</td><br><td id="sym">&amp;nabla;</td><br></tr><br><tr><br><td id="c">∈</td><br><td id="sym">&amp;isin;</td><br></tr><br><tr><br><td id="c">∉</td><br><td id="sym">&amp;notin;</td><br></tr><br><tr><br><td id="c">∋</td><br><td id="sym">&amp;ni;</td><br></tr><br><tr><br><td id="c">∏</td><br><td id="sym">&amp;prod;</td><br></tr><br><tr><br><td id="c">∑</td><br><td id="sym">&amp;sum;</td><br></tr><br><tr><br><td id="c">−</td><br><td id="sym">&amp;minus;</td><br></tr><br><tr><br><td id="c">∗</td><br><td id="sym">&amp;lowast;</td><br></tr><br><tr><br><td id="c">√</td><br><td id="sym">&amp;radic;</td><br></tr><br><tr><br><td id="c">∝</td><br><td id="sym">&amp;prop;</td><br></tr><br><tr><br><td id="c">∞</td><br><td id="sym">&amp;infin;</td><br></tr><br><tr><br><td id="c">∠</td><br><td id="sym">&amp;ang;</td><br></tr><br><tr><br><td id="c">∧</td><br><td id="sym">&amp;and;</td><br></tr><br><tr><br><td id="c">∨</td><br><td id="sym">&amp;or;</td><br></tr><br><tr><br><td id="c">∩</td><br><td id="sym">&amp;cap;</td><br></tr><br><tr><br><td id="c">∪</td><br><td id="sym">&amp;cup;</td><br></tr><br><tr><br><td id="c">∫</td><br><td id="sym">&amp;int;</td><br></tr><br><tr><br><td id="c">∴</td><br><td id="sym">&amp;there4;</td><br></tr><br><tr><br><td id="c">∼</td><br><td id="sym">&amp;sim;</td><br></tr><br><tr><br><td id="c">≅</td><br><td id="sym">&amp;cong;</td><br></tr><br><tr><br><td id="c">≈</td><br><td id="sym">&amp;asymp;</td><br></tr><br><tr><br><td id="c">≠</td><br><td id="sym">&amp;ne;</td><br></tr><br><tr><br><td id="c">≡</td><br><td id="sym">&amp;equiv;</td><br></tr><br><tr><br><td id="c">≤</td><br><td id="sym">&amp;le;</td><br></tr><br><tr><br><td id="c">≥</td><br><td id="sym">&amp;ge;</td><br></tr><br><tr><br><td id="c">⊂</td><br><td id="sym">&amp;sub;</td><br></tr><br><tr><br><td id="c">⊃</td><br><td id="sym">&amp;sup;</td><br></tr><br><tr><br><td id="c">⊄</td><br><td id="sym">&amp;nsub;</td><br></tr><br><tr><br><td id="c">⊆</td><br><td id="sym">&amp;sube;</td><br></tr><br><tr><br><td id="c">⊇</td><br><td id="sym">&amp;supe;</td><br></tr><br><tr><br><td id="c">⊕</td><br><td id="sym">&amp;oplus;</td><br></tr><br><tr><br><td id="c">⊗</td><br><td id="sym">&amp;otimes;</td><br></tr><br><tr><br><td id="c">⊥</td><br><td id="sym">&amp;perp;</td><br></tr><br><tr><br><td id="c">⋅</td><br><td id="sym">&amp;sdot;</td><br></tr><br></tbody><br></table><br><div></div><br><table class="sym      "><caption id="sym">General Punctuation</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">•</td><br><td id="sym">&amp;bull;</td><br></tr><br><tr><br><td id="c">…</td><br><td id="sym">&amp;hellip;</td><br></tr><br><tr><br><td id="c">′</td><br><td id="sym">&amp;prime;</td><br></tr><br><tr><br><td id="c">″</td><br><td id="sym">&amp;Prime;</td><br></tr><br><tr><br><td id="c">‾</td><br><td id="sym">&amp;oline;</td><br></tr><br><tr><br><td id="c">⁄</td><br><td id="sym">&amp;frasl;</td><br></tr><br></tbody><br></table><br><div></div><br><table class="sym      "><caption id="sym">Miscellaneous Technical</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">⌈</td><br><td id="sym">&amp;lceil;</td><br></tr><br><tr><br><td id="c">⌉</td><br><td id="sym">&amp;rceil;</td><br></tr><br><tr><br><td id="c">⌊</td><br><td id="sym">&amp;lfloor;</td><br></tr><br><tr><br><td id="c">⌋</td><br><td id="sym">&amp;rfloor;</td><br></tr><br><tr><br><td id="c">⟨</td><br><td id="sym">&amp;lang;</td><br></tr><br><tr><br><td id="c">⟩</td><br><td id="sym">&amp;rang;</td><br></tr><br></tbody><br></table><br><div></div><br><table class="sym      "><caption id="sym">Geometric Shapes</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">◊</td><br><td id="sym">&amp;loz;</td><br></tr><br></tbody><br></table><br><div></div><br><table class="sym      "><caption id="sym">Miscellaneous Symbols</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">♠</td><br><td id="sym">&amp;spades;</td><br></tr><br><tr><br><td id="c">♣</td><br><td id="sym">&amp;clubs;</td><br></tr><br><tr><br><td id="c">♥</td><br><td id="sym">&amp;hearts;</td><br></tr><br><tr><br><td id="c">♦</td><br><td id="sym">&amp;diams;</td><br></tr><br></tbody><br></table><br><table class="sym      "><caption id="sym">Letterlike Symbols</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">℘</td><br><td id="sym">&amp;weierp;</td><br></tr><br><tr><br><td id="c">ℑ</td><br><td id="sym">&amp;image;</td><br></tr><br><tr><br><td id="c">ℜ</td><br><td id="sym">&amp;real;</td><br></tr><br><tr><br><td id="c">™</td><br><td id="sym">&amp;trade;</td><br></tr><br><tr><br><td id="c">ℵ</td><br><td id="sym">&amp;alefsym;</td><br></tr><br></tbody><br></table><br><div></div><br><table class="sym      "><caption id="sym">Greek</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">Α</td><br><td id="sym">&amp;Alpha;</td><br></tr><br><tr><br><td id="c">Β</td><br><td id="sym">&amp;Beta;</td><br></tr><br><tr><br><td id="c">Γ</td><br><td id="sym">&amp;Gamma;</td><br></tr><br><tr><br><td id="c">Δ</td><br><td id="sym">&amp;Delta;</td><br></tr><br><tr><br><td id="c">Ε</td><br><td id="sym">&amp;Epsilon;</td><br></tr><br><tr><br><td id="c">Ζ</td><br><td id="sym">&amp;Zeta;</td><br></tr><br><tr><br><td id="c">Η</td><br><td id="sym">&amp;Eta;</td><br></tr><br><tr><br><td id="c">Θ</td><br><td id="sym">&amp;Theta;</td><br></tr><br><tr><br><td id="c">Ι</td><br><td id="sym">&amp;Iota;</td><br></tr><br><tr><br><td id="c">Κ</td><br><td id="sym">&amp;Kappa;</td><br></tr><br><tr><br><td id="c">Λ</td><br><td id="sym">&amp;Lambda;</td><br></tr><br><tr><br><td id="c">Μ</td><br><td id="sym">&amp;Mu;</td><br></tr><br><tr><br><td id="c">Ν</td><br><td id="sym">&amp;Nu;</td><br></tr><br><tr><br><td id="c">Ξ</td><br><td id="sym">&amp;Xi;</td><br></tr><br><tr><br><td id="c">Ο</td><br><td id="sym">&amp;Omicron;</td><br></tr><br><tr><br><td id="c">Π</td><br><td id="sym">&amp;Pi;</td><br></tr><br><tr><br><td id="c">Ρ</td><br><td id="sym">&amp;Rho;</td><br></tr><br><tr><br><td id="c">Σ</td><br><td id="sym">&amp;Sigma;</td><br></tr><br><tr><br><td id="c">Τ</td><br><td id="sym">&amp;Tau;</td><br></tr><br><tr><br><td id="c">Υ</td><br><td id="sym">&amp;Upsilon;</td><br></tr><br><tr><br><td id="c">Φ</td><br><td id="sym">&amp;Phi;</td><br></tr><br><tr><br><td id="c">Χ</td><br><td id="sym">&amp;Chi;</td><br></tr><br><tr><br><td id="c">Ψ</td><br><td id="sym">&amp;Psi;</td><br></tr><br><tr><br><td id="c">Ω</td><br><td id="sym">&amp;Omega;</td><br></tr><br><tr><br><td id="c">α</td><br><td id="sym">&amp;alpha;</td><br></tr><br><tr><br><td id="c">β</td><br><td id="sym">&amp;beta;</td><br></tr><br><tr><br><td id="c">γ</td><br><td id="sym">&amp;gamma;</td><br></tr><br><tr><br><td id="c">δ</td><br><td id="sym">&amp;delta;</td><br></tr><br><tr><br><td id="c">ε</td><br><td id="sym">&amp;epsilon;</td><br></tr><br><tr><br><td id="c">ζ</td><br><td id="sym">&amp;zeta;</td><br></tr><br><tr><br><td id="c">η</td><br><td id="sym">&amp;eta;</td><br></tr><br><tr><br><td id="c">θ</td><br><td id="sym">&amp;theta;</td><br></tr><br><tr><br><td id="c">ι</td><br><td id="sym">&amp;iota;</td><br></tr><br><tr><br><td id="c">κ</td><br><td id="sym">&amp;kappa;</td><br></tr><br><tr><br><td id="c">λ</td><br><td id="sym">&amp;lambda;</td><br></tr><br><tr><br><td id="c">μ</td><br><td id="sym">&amp;mu;</td><br></tr><br><tr><br><td id="c">ν</td><br><td id="sym">&amp;nu;</td><br></tr><br><tr><br><td id="c">ξ</td><br><td id="sym">&amp;xi;</td><br></tr><br><tr><br><td id="c">ο</td><br><td id="sym">&amp;omicron;</td><br></tr><br><tr><br><td id="c">π</td><br><td id="sym">&amp;pi;</td><br></tr><br><tr><br><td id="c">ρ</td><br><td id="sym">&amp;rho;</td><br></tr><br><tr><br><td id="c">ς</td><br><td id="sym">&amp;sigmaf;</td><br></tr><br><tr><br><td id="c">σ</td><br><td id="sym">&amp;sigma;</td><br></tr><br><tr><br><td id="c">τ</td><br><td id="sym">&amp;tau;</td><br></tr><br><tr><br><td id="c">υ</td><br><td id="sym">&amp;upsilon;</td><br></tr><br><tr><br><td id="c">φ</td><br><td id="sym">&amp;phi;</td><br></tr><br><tr><br><td id="c">χ</td><br><td id="sym">&amp;chi;</td><br></tr><br><tr><br><td id="c">ψ</td><br><td id="sym">&amp;psi;</td><br></tr><br><tr><br><td id="c">ω</td><br><td id="sym">&amp;omega;</td><br></tr><br><tr><br><td id="c">ϑ</td><br><td id="sym">&amp;thetasym;</td><br></tr><br><tr><br><td id="c">ϒ</td><br><td id="sym">&amp;upsih;</td><br></tr><br><tr><br><td id="c">ϖ</td><br><td id="sym">&amp;piv;</td><br></tr><br></tbody><br></table><br></div><br><div id="right"><br><br>## <a name="t2"></a>Special characters for HTML<br><br><table class="sym      "><caption id="sym">C0 Controls and Basic Latin</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">“</td><br><td id="sym">&amp;quot;</td><br></tr><br><tr><br><td id="c">&amp;</td><br><td id="sym">&amp;amp;</td><br></tr><br><tr><br><td id="c">&lt;</td><br><td id="sym">&amp;lt;</td><br></tr><br><tr><br><td id="c">&gt;</td><br><td id="sym">&amp;gt;</td><br></tr><br></tbody><br></table><br><div></div><br><table class="sym      "><caption id="sym">Latin Extended-A</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">Œ</td><br><td id="sym">&amp;OElig;</td><br></tr><br><tr><br><td id="c">œ</td><br><td id="sym">&amp;oelig;</td><br></tr><br><tr><br><td id="c">Š</td><br><td id="sym">&amp;Scaron;</td><br></tr><br><tr><br><td id="c">š</td><br><td id="sym">&amp;scaron;</td><br></tr><br><tr><br><td id="c">Ÿ</td><br><td id="sym">&amp;Yuml;</td><br></tr><br></tbody><br></table><br><div></div><br><table class="sym      "><caption id="sym">Spacing Modifier Letters</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c">ˆ</td><br><td id="sym">&amp;circ;</td><br></tr><br><tr><br><td id="c">˜</td><br><td id="sym">&amp;tilde;</td><br></tr><br></tbody><br></table><br><div></div><br><table class="sym      "><caption id="sym">General Punctuation</caption><br><tbody><br><tr><br><th id="sym">char glyph</th><br><th id="sym">HTML tag</th><br></tr><br><tr><br><td id="c"></td><br><td id="sym">&amp;ensp;</td><br></tr><br><tr><br><td id="c"></td><br><td id="sym">&amp;emsp;</td><br></tr><br><tr><br><td id="c"></td><br><td id="sym">&amp;thinsp;</td><br></tr><br><tr><br><td id="c">‌</td><br><td id="sym">&amp;zwnj;</td><br></tr><br><tr><br><td id="c">‍</td><br><td id="sym">&amp;zwj;</td><br></tr><br><tr><br><td id="c">‎</td><br><td id="sym">&amp;lrm;</td><br></tr><br><tr><br><td id="c">‏</td><br><td id="sym">&amp;rlm;</td><br></tr><br><tr><br><td id="c">–</td><br><td id="sym">&amp;ndash;</td><br></tr><br><tr><br><td id="c">—</td><br><td id="sym">&amp;mdash;</td><br></tr><br><tr><br><td id="c">‘</td><br><td id="sym">&amp;lsquo;</td><br></tr><br><tr><br><td id="c">’</td><br><td id="sym">&amp;rsquo;</td><br></tr><br><tr><br><td id="c">‚</td><br><td id="sym">&amp;sbquo;</td><br></tr><br><tr><br><td id="c">“</td><br><td id="sym">&amp;ldquo;</td><br></tr><br><tr><br><td id="c">”</td><br><td id="sym">&amp;rdquo;</td><br></tr><br><tr><br><td id="c">„</td><br><td id="sym">&amp;bdquo;</td><br></tr><br><tr><br><td id="c">†</td><br><td id="sym">&amp;dagger;</td><br></tr><br><tr><br><td id="c">‡</td><br><td id="sym">&amp;Dagger;</td><br></tr><br><tr><br><td id="c">‰</td><br><td id="sym">&amp;permil;</td><br></tr><br><tr><br><td id="c">‹</td><br><td id="sym">&amp;lsaquo;</td><br></tr><br><tr><br><td id="c">›</td><br><td id="sym">&amp;rsaquo;</td><br></tr><br><tr><br><td id="c">€</td><br><td id="sym">&amp;euro;</td><br></tr><br></tbody><br></table><br></div><br></div><br></div>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/php/">php</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/html/">html</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/实体形式/">实体形式</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1901,14 +1971,14 @@ Cookie：存储于客户端扩展字段，向同一域名的服务端发送属�
                 2016-2017 谢红光
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -1917,7 +1987,7 @@ Cookie：存储于客户端扩展字段，向同一域名的服务端发送属�
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -1950,9 +2020,9 @@ Cookie：存储于客户端扩展字段，向同一域名的服务端发送属�
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
